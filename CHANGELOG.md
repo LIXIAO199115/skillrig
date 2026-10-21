@@ -2,6 +2,40 @@
 
 All notable changes to SkillRig are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] — 2026-10-21
+
+The scale release.
+
+### Registry
+
+- **7,909 skills** (18 curated + 7,891 upstream) indexed from **35 repositories** at pinned commit SHAs, up from 354 and 8.
+- **428 entries blocked** by the security gate; 7,481 installable.
+- **13 packs**, including `security-hardening`, `frontend-craft`, `product-launch`, `data-workbench`, `docs-and-decks`, `incident-response`, `agent-builder`, and `codex-power`.
+- License status, trust level, quality grade, security badge, file count, and body size on every entry.
+- Scanner tuning cut false positives on documentation, TypeScript declarations, security examples, and normal `systemctl`/`crontab` operations. Prompt-injection and obfuscation rules now apply only to instruction files.
+
+### CLI
+
+- `skillrig recommend <task>` ranks the whole catalog for a described job, with category and agent filters.
+- `skillrig stats` prints composition, quality distribution, security distribution, license mix, content size, top categories, and top sources.
+- 22 commands, including the `rec` alias.
+
+### MCP
+
+- `skillrig_recommend` and `skillrig_stats` added; the stdio server now exposes **12 tools**.
+
+### Site
+
+- Registry browser handles 7,909 entries with 48-row paging, fast search, category/trust/source filters, and shareable URL state (`q`, `filter`, `cat`, `trust`, `src`, `sort`).
+- Source provenance table shows trust, pinned commit, license, indexed count, blocked count, and external-catalog status.
+- Site payload cut from 8.4 MB to 4.6 MB (0.98 MB gzip) by deduplicating source records and removing repeated fields.
+- Edition labels and metadata updated to 1.1.
+
+### Documentation
+
+- English and Chinese READMEs, registry format, command reference, architecture, and Codex guide updated to the new scale.
+- 51 tests pass; lint reports 0 errors and 0 warnings.
+
 ## [1.0.0] — 2026-10-21
 
 First public release.

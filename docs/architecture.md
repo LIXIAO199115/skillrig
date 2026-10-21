@@ -16,7 +16,7 @@ This document describes how the pieces fit together. It is written for people wh
 
 ```
 bin/skillrig.mjs          executable shim; maps errors to exit codes
-src/cli.mjs               argument parsing, 19 commands, human and JSON output
+src/cli.mjs               argument parsing, 22 commands, human and JSON output
 src/index.mjs             public library surface (re-exports core)
 
 src/core/
@@ -36,7 +36,7 @@ src/core/
   lockfile.mjs            project and global lockfiles, per-file hashes, drift verification
   installer.mjs           target resolution, conflict checks, atomic replace, security gate
   agentsmd.mjs            managed AGENTS.md block with markers and staleness detection
-  mcp.mjs                 MCP stdio JSON-RPC server exposing 10 tools
+  mcp.mjs                 MCP stdio JSON-RPC server exposing 12 tools
 
 src/data/agents.json      generated agent path catalogue
 skills/                   18 curated skills, each with SKILL.md
@@ -135,7 +135,7 @@ Every install writes a lockfile:
 ```json
 {
   "lockfileVersion": 1,
-  "generatedBy": "skillrig@1.0.0",
+  "generatedBy": "skillrig@1.1.0",
   "updatedAt": "2026-10-21T16:04:00.000Z",
   "skills": {
     "codex-cli-workflows": {

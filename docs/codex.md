@@ -54,7 +54,7 @@ What happens:
 
 1. Codex clones the marketplace repository into its cache.
 2. It reads `.agents/plugins/marketplace.json`.
-3. `plugin add` resolves `plugins/skillrig` and copies it to `~/.codex/plugins/cache/skillrig/skillrig/1.0.0/`.
+3. `plugin add` resolves `plugins/skillrig` and copies it to `~/.codex/plugins/cache/skillrig/skillrig/1.1.0/`.
 4. The plugin's `.codex-plugin/plugin.json` points at `./skills/`, so Codex sees 18 skills.
 
 Refresh after the repository changes:
@@ -109,8 +109,8 @@ The plugin manifest at `plugins/skillrig/.codex-plugin/plugin.json`:
 ```json
 {
   "name": "skillrig",
-  "version": "1.0.0",
-  "description": "Security-first skill marketplace and package manager for Codex and 79 coding agents.",
+  "version": "1.1.0",
+  "description": "Signed, security-audited skill registry and zero-dependency installer for Codex and every agent that reads SKILL.md.",
   "author": { "name": "Li Xiaocheng", "url": "https://github.com/LIXIAO199115" },
   "homepage": "https://lixiao199115.github.io/skillrig/",
   "repository": "https://github.com/LIXIAO199115/skillrig",

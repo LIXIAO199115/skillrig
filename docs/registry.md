@@ -20,17 +20,17 @@ Top-level shape:
 {
   "schemaVersion": 1,
   "name": "skillrig",
-  "version": "1.0.0",
-  "generatedAt": "2026-10-21T16:03:54.536Z",
-  "upstreamGeneratedAt": "2026-10-21T15:58:26.740Z",
+  "version": "1.1.0",
+  "generatedAt": "2026-10-21T19:04:20.365Z",
+  "upstreamGeneratedAt": "2026-10-21T18:56:36.000Z",
   "counts": {
-    "skills": 354,
+    "skills": 7909,
     "curated": 18,
-    "upstream": 336,
-    "packs": 5,
-    "blocked": 15,
+    "upstream": 7891,
+    "packs": 13,
+    "blocked": 428,
     "verified": 18,
-    "sources": 8,
+    "sources": 35,
     "shadowed": 0
   },
   "sources": [],
@@ -196,10 +196,10 @@ The site uses the same ordering, implemented in `site/app.js`, so search results
 
 ```bash
 npm run verify
-# registry verified: 354 skills, 5 packs
+# registry verified: 7,909 skills, 13 packs
 # key        a159f773dbf9d466
-# digest     sha256:32f794…
-# signed     2026-10-21T16:03:54.591Z
+# digest     sha256:edcb329584e0…
+# signed     2026-10-21T19:04:20.732Z
 ```
 
 `verifyRegistry` checks, in order:

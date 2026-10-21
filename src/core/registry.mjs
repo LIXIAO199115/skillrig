@@ -199,7 +199,9 @@ export function searchSkills(index, query = '', filters = {}) {
 export function registrySummary(index) {
   const skills = index.skills || [];
   const categories = [...new Set(skills.flatMap((skill) => skill.categories || []))];
-  const sources = [...new Set(skills.map((skill) => skill.source?.repo).filter(Boolean))];
+  const sources = Array.isArray(index.sources)
+    ? index.sources
+    : [...new Set(skills.map((skill) => skill.source?.repo).filter(Boolean))];
   return {
     name: index.name,
     generatedAt: index.generatedAt,
@@ -213,6 +215,93 @@ export function registrySummary(index) {
       : 0,
     cleanSecurity: skills.filter((skill) => skill.security?.badge === 'clean').length,
   };
+}
+
+function countValues(skills, pick) {
+  const counts = new Map();
+  for (const skill of skills) {
+    const value = pick(skill) || 'unknown';
+    counts.set(value, (counts.get(value) || 0) + 1);
+  }
+  return [...counts.entries()]
+    .map(([name, count]) => ({ name, count }))
+    .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
+}
+
+export function registryStats(index) {
+  const skills = index.skills || [];
+  const blocked = skills.filter((skill) => skill.blocked);
+  return {
+    ...registrySummary(index),
+    version: index.version || null,
+    generatedAt: index.generatedAt || null,
+    signedAt: index.signedAt || null,
+    installable: skills.length - blocked.length,
+    blocked: blocked.length,
+    totalBodyBytes: skills.reduce((sum, skill) => sum + (skill.bodyBytes || 0), 0),
+    totalFiles: skills.reduce((sum, skill) => sum + (skill.fileCount || 0), 0),
+    byTrust: countValues(skills, (skill) =>
+      skill.verified ? 'curated' : skill.trust === 'official' ? 'official' : 'community',
+    ),
+    byGrade: countValues(skills, (skill) => skill.quality?.grade),
+    bySecurity: countValues(skills, (skill) => skill.security?.badge),
+    byLicense: countValues(skills, (skill) => skill.licenseStatus),
+    bySource: countValues(skills, (skill) => skill.source?.repo),
+    topCategories: listCategories(index),
+  };
+}
+
+const RECOMMEND_STOPWORDS = new Set([
+  'a', 'an', 'the', 'for', 'to', 'my', 'me', 'in', 'on', 'with', 'and', 'or', 'of',
+  'that', 'this', 'please', 'help', 'i', 'want', 'need', 'how', 'do', 'does', 'is',
+  'it', 'can', 'you', 'we', 'our', 'from', 'at', 'by', 'be', 'as', 'into', 'about',
+]);
+
+export function recommendSkills(index, query, { limit = 8, category = null, agent = null, includeBlocked = false } = {}) {
+  const tokens = [...new Set(
+    (String(query || '').toLowerCase().match(/[\p{L}\p{N}+#._-]+/gu) || [])
+      .filter((token) => token.length > 1 && !RECOMMEND_STOPWORDS.has(token)),
+  )];
+  const scored = [];
+  for (const skill of index.skills || []) {
+    if (skill.blocked && !includeBlocked) continue;
+    if (category && !(skill.categories || []).includes(category.toLowerCase())) continue;
+    if (agent) {
+      const agents = skill.agents || [];
+      if (agents.length > 0 && !agents.includes(agent) && !agents.includes('*')) continue;
+    }
+    const name = String(skill.name || '').toLowerCase();
+    const tags = (skill.tags || []).map((tag) => String(tag).toLowerCase());
+    const categories = (skill.categories || []).map((item) => String(item).toLowerCase());
+    const description = String(skill.description || '').toLowerCase();
+    const meta = `${skill.author || ''} ${skill.source?.repo || ''}`.toLowerCase();
+    const matched = [];
+    let score = 0;
+    for (const token of tokens) {
+      let points = 0;
+      if (name === token) points = 120;
+      else if (name.startsWith(token)) points = 60;
+      else if (name.includes(token)) points = 40;
+      else if (tags.some((tag) => tag.includes(token))) points = 24;
+      else if (categories.some((item) => item.includes(token))) points = 18;
+      else if (description.includes(token)) points = 8;
+      else if (meta.includes(token)) points = 4;
+      if (points > 0) {
+        score += points;
+        matched.push(token);
+      }
+    }
+    if (tokens.length > 0 && matched.length === 0) continue;
+    const coverage = tokens.length ? matched.length / tokens.length : 0;
+    score += Math.round(coverage * 60);
+    score += Math.round((skill.quality?.score || 0) / 5);
+    if (skill.verified) score += 25;
+    if (skill.trust === 'official') score += 10;
+    scored.push({ ...skill, _score: score, _matched: matched });
+  }
+  const sort = query ? (a, b) => b._score - a._score || (b.quality?.score || 0) - (a.quality?.score || 0) : (a, b) =>
+    (b.quality?.score || 0) - (a.quality?.score || 0);
+  return scored.sort(sort).slice(0, limit);
 }
 
 export function compareEntryVersions(a, b) {

@@ -9,6 +9,8 @@ import {
   keyIdFor,
   registryIndexEntry,
   searchSkills,
+  recommendSkills,
+  registryStats,
 } from '../src/core/registry.mjs';
 import { tempDir } from './helpers.mjs';
 
@@ -104,4 +106,43 @@ test('search matches names, tags and descriptions', () => {
   assert.deepEqual(searchSkills(index, 'migrations').map((skill) => skill.name), ['sql-review']);
   assert.equal(searchSkills(index, 'missing').length, 0);
   assert.equal(searchSkills(index, '').length, 3);
+});
+
+test('recommend ranks task matches and hides blocked entries', () => {
+  const index = {
+    skills: [
+      { name: 'pr-reviewer', description: 'Review pull requests for security issues', tags: ['review'], categories: ['development'], quality: { score: 100 }, verified: true, blocked: false },
+      { name: 'docker-help', description: 'Build Docker images', tags: ['docker'], categories: ['devops'], quality: { score: 80 }, verified: false, blocked: false },
+      { name: 'risky-review', description: 'Review pull requests', tags: ['review'], categories: ['development'], quality: { score: 100 }, verified: false, blocked: true },
+    ],
+  };
+  const picks = recommendSkills(index, 'review pull request security', { limit: 2 });
+  assert.equal(picks[0].name, 'pr-reviewer');
+  assert.ok(picks.every((skill) => skill.name !== 'risky-review'));
+  assert.ok(picks[0]._score > 0);
+  assert.equal(recommendSkills(index, 'review', { limit: 3, includeBlocked: true }).length, 2);
+
+  const chinese = recommendSkills(
+    { skills: [{ name: '财报分析', description: '分析财务报表与现金流', tags: [], categories: [], quality: { score: 90 }, blocked: false }] },
+    '财务报表',
+    { limit: 1 },
+  );
+  assert.equal(chinese[0].name, '财报分析');
+});
+
+test('registryStats reports composition and blocked counts', () => {
+  const index = {
+    sources: [{ repo: 'one' }, { repo: 'two' }],
+    skills: [
+      { name: 'ok', blocked: false, verified: true, categories: ['a'], source: { repo: 'skillrig' }, quality: { score: 100, grade: 'A+' }, security: { badge: 'clean' }, trust: 'official' },
+      { name: 'blocked', blocked: true, verified: false, categories: ['a'], source: { repo: 'one' }, quality: { score: 50, grade: 'C' }, security: { badge: 'critical' }, trust: 'community' },
+    ],
+    packs: [],
+  };
+  const stats = registryStats(index);
+  assert.equal(stats.skills, 2);
+  assert.equal(stats.sources, 2);
+  assert.equal(stats.installable, 1);
+  assert.equal(stats.blocked, 1);
+  assert.equal(stats.bySecurity.find((row) => row.name === 'critical').count, 1);
 });

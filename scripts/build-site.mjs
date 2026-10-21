@@ -4,6 +4,7 @@ import path from 'node:path';
 import { PACKAGE_ROOT, packageInfo } from '../src/core/util.mjs';
 import { verifyRegistry } from '../src/core/registry.mjs';
 import { listAgents } from '../src/core/agents.mjs';
+import { mcpToolCount } from '../src/core/mcp.mjs';
 
 const SITE_DIR = path.join(PACKAGE_ROOT, 'site');
 const SOURCES_PATH = path.join(PACKAGE_ROOT, 'registry', 'sources.json');
@@ -25,47 +26,60 @@ function buildData() {
   const sourceConfig = readJson(SOURCES_PATH, { sources: [] });
   const sourceMeta = new Map((sourceConfig.sources || []).map((source) => [source.repo, source]));
 
+  const sourceIndex = new Map();
+  const compactSources = [];
+  for (const source of index.sources || []) {
+    const configured = sourceMeta.get(source.repo) || {};
+    sourceIndex.set(source.repo, compactSources.length);
+    compactSources.push({
+      repo: source.repo,
+      label: configured.label || source.repo.split('/')[0],
+      type: 'github',
+      trust: source.trust || configured.trust || 'community',
+      commit: source.commit || null,
+      license: source.license || null,
+      licenseStatus: source.licenseStatus || null,
+      skills: source.skills ?? null,
+      blocked: source.blocked ?? null,
+      skipped: source.skipped ?? null,
+      enabled: true,
+      reason: configured.reason || null,
+      error: source.error || null,
+    });
+  }
+
   const skills = (index.skills || [])
-    .map((skill) => ({
-      id: skill.id || `${skill.source?.repo || 'skillrig'}::${skill.name}`,
-      name: skill.name,
-      description: trimDescription(skill.description),
-      version: skill.version || '0.0.0',
-      license: skill.license || null,
-      licenseStatus: skill.licenseStatus || 'unlicensed',
-      author: skill.author || null,
-      categories: skill.categories || [],
-      tags: skill.tags || [],
-      compatibility: skill.compatibility ? trimDescription(skill.compatibility, 500) : null,
-      requires: skill.requires || [],
-      conflicts: skill.conflicts || [],
-      trust: skill.trust || 'community',
-      quality: skill.quality || { score: 0, grade: 'F' },
-      security: {
-        score: skill.security?.score ?? 0,
-        grade: skill.security?.grade || 'F',
-        badge: skill.security?.badge || 'unknown',
-        counts: skill.security?.counts || { critical: 0, high: 0, medium: 0, low: 0, info: 0 },
-        blocking: Boolean(skill.security?.blocking),
-        suppressed: skill.security?.suppressed || 0,
-      },
-      source: {
-        type: skill.source?.type || 'unknown',
-        repo: skill.source?.repo || 'skillrig',
+    .map((skill) => {
+      const counts = skill.security?.counts || {};
+      const hasCounts = ['critical', 'high', 'medium', 'low', 'info'].some((key) => (counts[key] || 0) > 0);
+      return {
+        name: skill.name,
+        description: trimDescription(skill.description, 240),
+        version: skill.version || '0.0.0',
+        license: skill.license || null,
+        licenseStatus: skill.licenseStatus || 'unlicensed',
+        categories: skill.categories || [],
+        tags: skill.tags || [],
+        requires: skill.requires || [],
+        conflicts: skill.conflicts || [],
+        trust: skill.trust || 'community',
+        q: [skill.quality?.score || 0, skill.quality?.grade || 'F'],
+        sec: [
+          skill.security?.score ?? 0,
+          skill.security?.badge || 'unknown',
+          hasCounts ? [counts.critical || 0, counts.high || 0, counts.medium || 0, counts.low || 0, counts.info || 0] : null,
+          skill.security?.suppressed || 0,
+        ],
+        src: sourceIndex.has(skill.source?.repo) ? sourceIndex.get(skill.source.repo) : -1,
         path: skill.source?.path || null,
-        url: skill.source?.url || null,
-        commit: skill.source?.commit || skill.source?.ref || null,
-        branch: skill.source?.branch || null,
-      },
-      verified: Boolean(skill.verified),
-      blocked: Boolean(skill.blocked),
-      integrity: skill.integrity || null,
-      bodyBytes: skill.bodyBytes || 0,
-      bodyLines: skill.bodyLines || 0,
-      fileCount: skill.fileCount || 0,
-      updatedAt: skill.updatedAt || null,
-    }))
-    .sort((a, b) => a.name.localeCompare(b.name) || a.source.repo.localeCompare(b.source.repo));
+        blocked: Boolean(skill.blocked),
+        hash: skill.integrity ? skill.integrity.replace(/^sha256:/, '').slice(0, 12) : null,
+        lines: skill.bodyLines || 0,
+        files: skill.fileCount || 0,
+        updatedAt: skill.updatedAt || null,
+      };
+    })
+    .sort((a, b) => a.name.localeCompare(b.name) || (a.src - b.src));
 
   const packs = (index.packs || []).map((pack) => ({
     id: pack.id,
@@ -87,30 +101,13 @@ function buildData() {
     .map(([name, count]) => ({ name, count }))
     .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
 
-  const sourceRows = new Map();
-  for (const source of index.sources || []) {
-    const configured = sourceMeta.get(source.repo) || {};
-    const enabled = configured.enabled !== false;
-    sourceRows.set(source.repo, {
-      repo: source.repo,
-      label: configured.label || source.repo.split('/')[0],
-      trust: source.trust || configured.trust || 'community',
-      commit: source.commit || null,
-      license: enabled ? source.license || null : null,
-      licenseStatus: enabled ? source.licenseStatus || null : null,
-      skills: source.skills ?? null,
-      blocked: source.blocked ?? null,
-      skipped: source.skipped ?? null,
-      enabled,
-      reason: configured.reason || null,
-      error: source.error || null,
-    });
-  }
+  const sources = [...compactSources];
   for (const configured of sourceConfig.sources || []) {
-    if (sourceRows.has(configured.repo)) continue;
-    sourceRows.set(configured.repo, {
+    if (sourceIndex.has(configured.repo)) continue;
+    sources.push({
       repo: configured.repo,
       label: configured.label || configured.repo.split('/')[0],
+      type: 'github',
       trust: configured.trust || 'community',
       commit: null,
       license: null,
@@ -123,12 +120,10 @@ function buildData() {
       error: null,
     });
   }
-  const sources = [...sourceRows.values()]
-    .sort((a, b) => Number(b.enabled) - Number(a.enabled) || (b.skills || 0) - (a.skills || 0));
 
   const counts = index.counts || {};
-  const qualityTotal = skills.reduce((sum, skill) => sum + (skill.quality.score || 0), 0);
-  const clean = skills.filter((skill) => skill.security.badge === 'clean').length;
+  const qualityTotal = skills.reduce((sum, skill) => sum + (skill.q[0] || 0), 0);
+  const clean = skills.filter((skill) => skill.sec[1] === 'clean').length;
   const licenses = {};
   for (const skill of skills) {
     licenses[skill.licenseStatus] = (licenses[skill.licenseStatus] || 0) + 1;
@@ -147,12 +142,15 @@ function buildData() {
       keyId: verified.keyId || null,
       digest: verified.record?.digest || null,
       agentCount: listAgents().length,
+      mcpTools: mcpToolCount(),
+      packCount: packs.length,
+      categoryCount: categories.length,
       averageQuality: skills.length ? Math.round(qualityTotal / skills.length) : 0,
       clean,
+      installable: skills.length - skills.filter((skill) => skill.blocked).length,
       licenses,
       counts,
     },
-    agents: [...new Set(listAgents().map((agent) => agent.name))].sort((a, b) => a.localeCompare(b)),
     categories,
     skills,
     packs,

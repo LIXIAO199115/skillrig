@@ -1,0 +1,15 @@
+{
+  "name": "incident-response",
+  "title": "Incident Response",
+  "version": "1.0.0",
+  "description": "Stabilize a failing system, find the root cause, write the postmortem, and ship the fix with a release record instead of a whisper.",
+  "skills": [
+    "incident-postmortem",
+    "incident-response",
+    "systematic-debugging",
+    "terminal-debugger",
+    "release-engineer",
+    "git-recovery"
+  ],
+  "tags": ["incident", "debugging", "postmortem", "recovery"]
+}

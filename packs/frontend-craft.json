@@ -1,0 +1,15 @@
+{
+  "name": "frontend-craft",
+  "title": "Frontend Craft",
+  "version": "1.0.0",
+  "description": "Design, build, test, and review a frontend with a real browser in the loop. Covers visual direction, accessibility, design systems, and end-to-end checks.",
+  "skills": [
+    "frontend-design",
+    "accessibility",
+    "design-system",
+    "design-review",
+    "webapp-testing",
+    "playwright"
+  ],
+  "tags": ["frontend", "design", "accessibility", "playwright"]
+}

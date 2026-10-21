@@ -1,0 +1,15 @@
+{
+  "name": "codex-power",
+  "title": "Codex Power User",
+  "version": "1.0.0",
+  "description": "Go past the default Codex loop: drive headless runs, publish a plugin marketplace, expose tools over MCP, and keep every session inside a measured context budget.",
+  "skills": [
+    "codex-cli-workflows",
+    "codex-plugin-author",
+    "mcp-server-builder",
+    "context-budget",
+    "skill-creator",
+    "writing-plans"
+  ],
+  "tags": ["codex", "plugins", "mcp", "power-user"]
+}

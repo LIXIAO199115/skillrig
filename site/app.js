@@ -33,6 +33,8 @@
     query: '',
     filter: 'all',
     category: '',
+    trust: '',
+    source: '',
     sort: 'quality',
     visible: PAGE_SIZE,
   };
@@ -54,8 +56,11 @@
   const els = {
     search: $('#search'),
     category: $('#category'),
+    trust: $('#trust'),
+    source: $('#source'),
     sort: $('#sort'),
     resultCount: $('#result-count'),
+    resultStats: $('#result-stats'),
     body: $('#registry-body'),
     empty: $('#table-empty'),
     loadMore: $('#load-more'),
@@ -66,7 +71,47 @@
     scrim: $('#scrim'),
   };
 
+  function hydrateData() {
+    const sources = Array.isArray(DATA.sources) ? DATA.sources : [];
+    const zeroCounts = { critical: 0, high: 0, medium: 0, low: 0, info: 0 };
+    DATA.skills.forEach((skill) => {
+      const src = Number.isInteger(skill.src) && skill.src >= 0 ? sources[skill.src] : null;
+      const type = src ? src.type || 'github' : 'bundled';
+      const repo = src ? src.repo : 'skillrig';
+      const path = skill.path || null;
+      const url = path
+        ? type === 'bundled'
+          ? `${REPO_URL}/tree/main/${path}`
+          : `https://github.com/${repo}/tree/${src && src.commit ? src.commit : 'main'}/${path}`
+        : null;
+      skill.source = { type, repo, path, url };
+      skill.quality = { score: skill.q ? skill.q[0] : 0, grade: skill.q ? skill.q[1] : 'F' };
+      const counts = skill.sec ? skill.sec[2] : null;
+      skill.security = {
+        score: skill.sec ? skill.sec[0] : 0,
+        badge: skill.sec ? skill.sec[1] : 'unknown',
+        counts: counts
+          ? { critical: counts[0], high: counts[1], medium: counts[2], low: counts[3], info: counts[4] }
+          : zeroCounts,
+        suppressed: skill.sec ? skill.sec[3] || 0 : 0,
+        blocking: Boolean(skill.blocked),
+      };
+      skill.id = `${repo}::${skill.name}`;
+      skill.integrity = skill.hash || null;
+      skill.bodyLines = skill.lines || 0;
+      skill.fileCount = skill.files || 0;
+      if (!skill.categories) skill.categories = [];
+      if (!skill.tags) skill.tags = [];
+      if (!skill.requires) skill.requires = [];
+      if (!skill.conflicts) skill.conflicts = [];
+    });
+    DATA.sources = sources.slice().sort(
+      (a, b) => Number(b.enabled) - Number(a.enabled) || (b.skills || 0) - (a.skills || 0),
+    );
+  }
+
   function init() {
+    hydrateData();
     DATA.skills.forEach((skill, index) => {
       const number = index + 1;
       if (!entryNo.has(skill.id)) entryNo.set(skill.id, number);
@@ -79,6 +124,8 @@
     setCertificate();
     setChipCounts();
     fillCategories();
+    fillSources();
+    restoreState();
     renderPacks();
     renderSources();
     bindEvents();
@@ -155,12 +202,19 @@
   /* ---------- Header, certificate, counts ---------- */
 
   function setStats() {
+    const bundled = DATA.skills.filter((skill) => skill.source.type === 'bundled').length;
     const values = {
       skills: DATA.skills.length,
-      curated: DATA.skills.filter((skill) => skill.source.type === 'bundled').length,
-      agents: DATA.meta.agentCount || DATA.agents.length,
+      curated: bundled,
+      upstream: DATA.skills.length - bundled,
+      installable: DATA.meta.installable != null ? DATA.meta.installable : DATA.skills.filter((skill) => !skill.blocked).length,
+      blocked: DATA.skills.filter((skill) => skill.blocked).length,
+      agents: DATA.meta.agentCount,
       sources: DATA.meta.counts && DATA.meta.counts.sources != null ? DATA.meta.counts.sources : DATA.sources.filter((source) => source.enabled).length,
       clean: DATA.meta.clean,
+      mcpTools: DATA.meta.mcpTools || 10,
+      packs: DATA.meta.packCount || DATA.packs.length,
+      quality: DATA.meta.averageQuality,
     };
     $$('[data-stat]').forEach((node) => {
       const value = values[node.dataset.stat];
@@ -192,6 +246,7 @@
       upstream: DATA.skills.filter((skill) => skill.source.type !== 'bundled').length,
       blocked: DATA.skills.filter((skill) => skill.blocked).length,
       clean: DATA.skills.filter((skill) => skill.security.badge === 'clean').length,
+      official: DATA.skills.filter((skill) => skill.source.type !== 'bundled' && skill.trust === 'official').length,
     };
     $$('.chip[data-filter]').forEach((chip) => {
       let span = chip.querySelector('span');
@@ -210,6 +265,75 @@
       fragment.append(el('option', { value: category.name, text: `${category.name} (${formatNumber(category.count)})` }));
     }
     els.category.append(fragment);
+  }
+
+  function fillSources() {
+    if (!els.source) return;
+    const fragment = document.createDocumentFragment();
+    for (const source of DATA.sources) {
+      const label = source.label || source.repo.split('/')[0];
+      const suffix = source.skills == null ? '' : ` (${formatNumber(source.skills)})`;
+      fragment.append(el('option', {
+        value: source.repo,
+        text: `${source.repo} — ${label}${suffix}`,
+      }));
+    }
+    els.source.append(fragment);
+  }
+
+  function restoreState() {
+    let params;
+    try {
+      params = new URLSearchParams(window.location.search);
+    } catch {
+      return;
+    }
+    const query = params.get('q') || '';
+    const filter = params.get('filter') || 'all';
+    const category = params.get('cat') || '';
+    const trust = params.get('trust') || '';
+    const source = params.get('src') || '';
+    const sort = params.get('sort') || 'quality';
+
+    state.query = query;
+    state.filter = ['all', 'curated', 'upstream', 'blocked', 'clean', 'official'].includes(filter) ? filter : 'all';
+    state.category = category;
+    state.trust = ['curated', 'official', 'community'].includes(trust) ? trust : '';
+    state.source = DATA.sources.some((item) => item.repo === source) ? source : '';
+    state.sort = ['quality', 'name', 'security', 'updated'].includes(sort) ? sort : 'quality';
+
+    els.search.value = state.query;
+    els.category.value = state.category;
+    if (els.trust) els.trust.value = state.trust;
+    if (els.source) els.source.value = state.source;
+    els.sort.value = state.sort;
+    $$('.chip[data-filter]').forEach((chip) => {
+      const active = chip.dataset.filter === state.filter;
+      chip.classList.toggle('is-active', active);
+      chip.setAttribute('aria-pressed', String(active));
+    });
+  }
+
+  let urlTimer = null;
+
+  function syncURL() {
+    clearTimeout(urlTimer);
+    urlTimer = setTimeout(() => {
+      const params = new URLSearchParams();
+      if (state.query.trim()) params.set('q', state.query.trim());
+      if (state.filter !== 'all') params.set('filter', state.filter);
+      if (state.category) params.set('cat', state.category);
+      if (state.trust) params.set('trust', state.trust);
+      if (state.source) params.set('src', state.source);
+      if (state.sort !== 'quality') params.set('sort', state.sort);
+      const query = params.toString();
+      const next = `${window.location.pathname}${query ? `?${query}` : ''}${window.location.hash}`;
+      try {
+        window.history.replaceState(null, '', next);
+      } catch {
+        /* file:// pages may reject history updates. */
+      }
+    }, 250);
   }
 
   /* ---------- Registry ---------- */
@@ -258,6 +382,11 @@
       if (state.filter === 'upstream' && skill.source.type === 'bundled') return false;
       if (state.filter === 'blocked' && !skill.blocked) return false;
       if (state.filter === 'clean' && skill.security.badge !== 'clean') return false;
+      if (state.filter === 'official' && (skill.source.type === 'bundled' || skill.trust !== 'official')) return false;
+      if (state.trust === 'curated' && skill.source.type !== 'bundled') return false;
+      if (state.trust === 'official' && (skill.source.type === 'bundled' || skill.trust !== 'official')) return false;
+      if (state.trust === 'community' && (skill.source.type === 'bundled' || skill.trust === 'official')) return false;
+      if (state.source && skill.source.repo !== state.source) return false;
       if (state.category && !skill.categories.includes(state.category)) return false;
       if (tokens.length) {
         const score = searchScore(skill, tokens);
@@ -278,6 +407,7 @@
 
     state.visible = PAGE_SIZE;
     renderTable();
+    syncURL();
   }
 
   function renderTable() {
@@ -301,6 +431,12 @@
     if (state.query.trim()) count += ` matching “${state.query.trim()}”`;
     if (remaining > 0) count += ` · showing ${formatNumber(state.visible)}`;
     els.resultCount.textContent = count;
+
+    if (els.resultStats) {
+      const blocked = results.filter((skill) => skill.blocked).length;
+      const clean = results.filter((skill) => skill.security.badge === 'clean').length;
+      els.resultStats.textContent = `${formatNumber(total - blocked)} installable · ${formatNumber(blocked)} blocked · ${formatNumber(clean)} clean`;
+    }
   }
 
   function renderRow(skill, number) {
@@ -329,7 +465,7 @@
         el('span', { class: 'reg-name', text: skill.name }),
         el('span', {
           class: 'reg-sub',
-          text: `${skill.source.type === 'bundled' ? 'SkillRig' : skill.source.repo} · v${skill.version}`,
+          text: `${skill.source.type === 'bundled' ? 'SkillRig' : skill.source.repo}${skill.version && skill.version !== '0.0.0' ? ` · v${skill.version}` : ''}`,
           title: skill.source.path || skill.source.repo,
         }),
       ),
@@ -439,8 +575,10 @@
         || source.error
         || (source.skipped ? `${source.skipped} skill(s) skipped during crawl` : '');
 
+      const trust = source.trust === 'official' ? 'official' : 'community';
       fragment.append(el('tr', { class: source.enabled ? '' : 'external' },
         repoCell,
+        el('td', { class: 'trust-cell' }, el('span', { class: `tag ${trust}`, text: trust })),
         commitCell,
         el('td', { class: 'lic', title: LICENSE_HINT[source.licenseStatus] || '', text: license }),
         el('td', { class: 'num', text: source.skills == null ? '—' : formatNumber(source.skills) }),
@@ -536,7 +674,7 @@
       ['Quality', `${skill.quality.grade} · ${skill.quality.score}/100`],
       ['Security', `${securityLabel(skill)} · ${skill.security.score}/100`],
       ['License', skill.license || 'Unlicensed'],
-      ['Version', `v${skill.version}`],
+      ['Version', skill.version && skill.version !== '0.0.0' ? `v${skill.version}` : '—'],
       ['Source', skill.source.repo],
       ['Files', `${formatNumber(skill.fileCount)} · ${formatNumber(skill.bodyLines)} lines`],
       ['Integrity', shortHash(skill.integrity), 'mono'],
@@ -675,6 +813,20 @@
       apply();
     });
 
+    if (els.trust) {
+      els.trust.addEventListener('change', () => {
+        state.trust = els.trust.value;
+        apply();
+      });
+    }
+
+    if (els.source) {
+      els.source.addEventListener('change', () => {
+        state.source = els.source.value;
+        apply();
+      });
+    }
+
     els.sort.addEventListener('change', () => {
       state.sort = els.sort.value;
       apply();
@@ -697,9 +849,13 @@
       state.query = '';
       state.filter = 'all';
       state.category = '';
+      state.trust = '';
+      state.source = '';
       state.sort = 'quality';
       els.search.value = '';
       els.category.value = '';
+      if (els.trust) els.trust.value = '';
+      if (els.source) els.source.value = '';
       els.sort.value = 'quality';
       $$('.chip[data-filter]').forEach((chip) => {
         const active = chip.dataset.filter === 'all';

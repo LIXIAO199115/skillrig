@@ -2,14 +2,14 @@
 
 **A signed skill registry and zero-dependency installer for Codex and 80 coding agents.**
 
-**Live registry:** [lixiao199115.github.io/skillrig](https://lixiao199115.github.io/skillrig/) — search 354 entries, read the inspection ledger, copy install commands.
+**Live registry:** [lixiao199115.github.io/skillrig](https://lixiao199115.github.io/skillrig/) — search 7,909 entries, read the inspection ledger, copy install commands.
 
 [![CI](https://github.com/LIXIAO199115/skillrig/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/LIXIAO199115/skillrig/actions/workflows/ci.yml)
 [![CodeQL](https://github.com/LIXIAO199115/skillrig/actions/workflows/codeql.yml/badge.svg?branch=main)](https://github.com/LIXIAO199115/skillrig/actions/workflows/codeql.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-14150f?style=flat-square)](LICENSE)
 [![Node](https://img.shields.io/badge/node-%3E%3D20.11-14150f?style=flat-square)](package.json)
 [![Runtime dependencies](https://img.shields.io/badge/runtime%20deps-0-f04e23?style=flat-square)](package.json)
-[![Skills](https://img.shields.io/badge/skills-354-1f5c45?style=flat-square)](registry/index.json)
+[![Skills](https://img.shields.io/badge/skills-7%2C909-1f5c45?style=flat-square)](registry/index.json)
 [![Agents](https://img.shields.io/badge/agents-80-1f5c45?style=flat-square)](docs/agents.md)
 [![Registry](https://img.shields.io/badge/registry-ed25519%20signed-f04e23?style=flat-square)](registry/index.json.sig)
 [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/LIXIAO199115/skillrig/badge)](https://securityscorecards.dev/viewer/?uri=github.com/LIXIAO199115/skillrig)
@@ -22,7 +22,7 @@ Most skill collections ask you to trust a git clone. SkillRig gives every instal
 node bin/skillrig.mjs install codex-cli-workflows --agent codex
 ```
 
-> 354 skills in the bundled registry · 18 curated and maintained here · 336 indexed from 8 upstream repositories · 15 blocked by the security gate · 0 runtime dependencies.
+> 7,909 skills in the bundled registry · 18 curated and maintained here · 7,891 indexed from 35 upstream repositories · 428 blocked by the security gate · 13 packs · 0 runtime dependencies.
 
 ---
 
@@ -96,10 +96,10 @@ The plugin exposes all 18 curated skills inside Codex. Codex caches the plugin a
 
 ```bash
 skillrig verify
-# registry verified: 354 skills, 5 packs
+# registry verified: 7,909 skills, 13 packs
 # key        a159f773dbf9d466
-# digest     sha256:32f794...
-# signed     2026-10-21T16:03:54.591Z
+# digest     sha256:edcb329584e0...
+# signed     2026-10-21T19:04:20.732Z
 ```
 
 Registry entries carry trust level (`official`, `community`), license status (`permissive`, `copyleft`, `review`, `unlicensed`), quality score, security badge, and a `blocked` flag.
@@ -167,7 +167,7 @@ Give an agent the ability to search, inspect, scan, install, and audit skills th
 skillrig mcp
 ```
 
-Ten tools are exposed, including `skillrig_search`, `skillrig_scan`, `skillrig_install`, `skillrig_audit`, `skillrig_budget`, and `skillrig_doctor`. Works with Codex and any MCP client that speaks stdio JSON-RPC.
+Twelve tools are exposed, including `skillrig_search`, `skillrig_recommend`, `skillrig_stats`, `skillrig_scan`, `skillrig_install`, `skillrig_audit`, `skillrig_budget`, and `skillrig_doctor`. Works with Codex and any MCP client that speaks stdio JSON-RPC.
 
 ### 7. Publish with provenance
 
@@ -186,17 +186,17 @@ skillrig publish my-skill --key ~/.skillrig/keys/skillrig.private.pem
 
 | Metric | Value |
 | --- | --- |
-| Total skills | 354 |
+| Total skills | 7,909 |
 | Curated and maintained in this repo | 18 |
-| Indexed from upstream repositories | 336 |
-| Upstream repositories | 8 |
-| Blocked by the security gate | 15 |
-| Packs | 5 |
-| Average quality score | 79 / 100 |
-| Clean security badge | 317 |
+| Indexed from upstream repositories | 7,891 |
+| Upstream repositories | 35 |
+| Blocked by the security gate | 428 |
+| Packs | 13 |
+| Average quality score | 73 / 100 |
+| Clean security badge | 6,645 |
 | Supported agents | 80 |
 
-Upstream sources: `openai/skills`, `anthropics/skills`, `obra/superpowers`, `addyosmani/agent-skills`, `vercel-labs/skills`, `kepano/obsidian-skills`, `wshobson/agents`, `coreyhaines31/marketingskills`. Each indexed skill pins a commit SHA and links back to the exact directory.
+Upstream sources include `openai/skills`, `anthropics/skills`, `google/skills`, `googleworkspace/cli`, `microsoft/SkillOpt`, `cloudflare/security-audit-skill`, `sickn33/antigravity-awesome-skills`, `LeoYeAI/openclaw-master-skills`, `TerminalSkills/skills`, `mukul975/Anthropic-Cybersecurity-Skills`, `thedaviddias/Front-End-Checklist`, and 24 more. The full 35-repository provenance table, with commit SHAs and license status, is in [`registry/sources.json`](registry/sources.json). Each indexed skill pins a commit SHA and links back to the exact directory.
 
 Three large repositories are listed as external catalogs rather than indexed, to keep installs small: `github/awesome-copilot` (~128 MB), `K-Dense-AI/scientific-agent-skills` (~471 MB), and `JimLiu/baoyu-skills` (~34 MB).
 
@@ -232,6 +232,8 @@ All 18 pass the quality gate at 100/100 (A+) and the security scanner at A+ (one
 | Command | What it does |
 | --- | --- |
 | `skillrig search [query]` | Search by name, description, tags, category, source |
+| `skillrig recommend <task>` | Rank skills for a described task |
+| `skillrig stats` | Registry composition, coverage, top sources |
 | `skillrig info <name\|pack>` | Full metadata, source, license, integrity, security |
 | `skillrig install <source...>` | Registry, GitHub, local path, `.skm` bundle, or pack |
 | `skillrig remove <name...>` | Remove tracked installs only |
@@ -291,7 +293,7 @@ Read [docs/skill-spec.md](docs/skill-spec.md) for the frontmatter and folder con
 ## Development
 
 ```bash
-npm test                # 48 tests, no network
+npm test                # 51 tests, no network
 npm run validate        # all skills: quality + security
 npm run build           # registry + plugin + site
 npm run build:registry  # curated + upstream -> registry/index.json

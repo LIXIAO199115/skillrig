@@ -17,7 +17,17 @@ import {
   packageInfo,
 } from './core/util.mjs';
 import { SkillRigError, UsageError, IntegrityError } from './core/errors.mjs';
-import { loadRegistry, verifyRegistry, getSkill, getPack, searchSkills, registrySummary, listCategories } from './core/registry.mjs';
+import {
+  loadRegistry,
+  verifyRegistry,
+  getSkill,
+  getPack,
+  searchSkills,
+  recommendSkills,
+  registrySummary,
+  registryStats,
+  listCategories,
+} from './core/registry.mjs';
 import { parseSourceSpec, loadSpec, loadBundled, loadLocal, loadBundle, buildBundle, bundleSigningPayload } from './core/source.mjs';
 import { loadPrivateKey, signBytes } from './core/registry.mjs';
 import { scanFiles, riskSummary, severityAtLeast, toSarif } from './core/security.mjs';
@@ -39,8 +49,11 @@ import { runMcpServer, mcpToolCount } from './core/mcp.mjs';
 import { githubRepoInfo } from './core/net.mjs';
 
 const pkg = packageInfo();
+const formatNumber = (value) => Number(value || 0).toLocaleString('en-US');
 const COMMANDS = [
   'search',
+  'recommend',
+  'stats',
   'info',
   'install',
   'remove',
@@ -69,6 +82,7 @@ const ALIASES = {
   i: 'install',
   add: 'install',
   s: 'search',
+  rec: 'recommend',
   docs: 'info',
 };
 
@@ -248,6 +262,13 @@ function commandHelp(command) {
               [--license <spdx>] [--sort relevance|quality|updated|name] [--limit <n>] [--json]
 
 Search the signed registry. No query lists the highest-quality skills.`,
+    recommend: `skillrig recommend "<task>" [--category <name>] [--agent <id>] [--limit <n>]
+                   [--include-blocked] [--json]
+
+Rank skills for a task in plain language and print the best install command.`,
+    stats: `skillrig stats [--json]
+
+Show registry composition: trust, grades, security, licenses, categories, and top sources.`,
     info: `skillrig info <name|owner/repo@skill> [--json]
 
 Show metadata, quality, security, source, and the exact install command.`,
@@ -321,6 +342,8 @@ ${c.bold('Usage')}
 
 ${c.bold('Commands')}
   search       Search the signed registry
+  recommend    Rank skills for a task and print the install command
+  stats        Show registry composition and coverage
   info         Show a skill or pack
   install      Install from the registry, GitHub, a path, or a .skm bundle
   remove       Remove installed skills
@@ -386,6 +409,70 @@ async function cmdSearch(ctx) {
     ),
   );
   output(c.gray('Install with: skillrig install <name>. Add --json for full metadata.'));
+}
+
+async function cmdRecommend(ctx) {
+  const query = ctx.positional.join(' ').trim();
+  if (!query) {
+    throw new UsageError(
+      'Usage: skillrig recommend "<task>" [--category <name>] [--agent <id>] [--limit <n>] [--include-blocked] [--json]',
+    );
+  }
+  const index = loadIndex();
+  const results = recommendSkills(index, query, {
+    limit: number(ctx.flags.limit, 8),
+    category: ctx.flags.category ? String(ctx.flags.category) : null,
+    agent: ctx.flags.agent ? String(Array.isArray(ctx.flags.agent) ? ctx.flags.agent[0] : ctx.flags.agent) : null,
+    includeBlocked: bool(ctx.flags, 'include-blocked'),
+  });
+  if (bool(ctx.flags, 'json')) {
+    emitJson({
+      query,
+      count: results.length,
+      skills: results.map(({ _score, _matched, ...entry }) => ({ ...entry, score: _score, matched: _matched })),
+    });
+    return;
+  }
+  if (results.length === 0) {
+    output(`No skills matched "${query}". Try "skillrig search" with broader terms.`);
+    return;
+  }
+  const rows = results.map((entry) => [
+    entry.name,
+    entry.quality?.grade || '—',
+    entry._matched.slice(0, 4).join(', ') || 'quality',
+    truncate(oneLine(entry.description, 76), 76),
+  ]);
+  output(c.bold(`Recommended for: ${query}`));
+  output(renderTable(rows, ['SKILL', 'GRADE', 'MATCHES', 'WHAT IT DOES']));
+  output(c.gray(`\nInstall the top pick: skillrig install ${results[0].name} --agent codex`));
+  output(c.gray('Add --json for scores and metadata. Add --include-blocked to see gated entries.'));
+}
+
+async function cmdStats(ctx) {
+  const index = loadIndex();
+  const stats = registryStats(index);
+  if (bool(ctx.flags, 'json')) {
+    emitJson(stats);
+    return;
+  }
+  const list = (rows, limit = 8) =>
+    rows.slice(0, limit).map((row) => `${row.name} ${c.gray(String(row.count))}`).join(' · ');
+  output(c.bold(`SkillRig ${stats.version || ''} registry`.trim()));
+  output(`Generated   ${stats.generatedAt || '—'}`);
+  output(
+    `Skills      ${String(stats.skills)} total · ${String(stats.installable)} installable · ${String(stats.blocked)} blocked`,
+  );
+  output(`Composition ${list(stats.byTrust, 4)}`);
+  output(`Quality     avg ${stats.avgQuality}/100 · ${list(stats.byGrade, 8)}`);
+  output(`Security    ${list(stats.bySecurity, 5)}`);
+  output(`Licenses    ${list(stats.byLicense, 5)}`);
+  output(`Surface     ${String(stats.packs)} packs · ${String(stats.sources)} sources · ${String(stats.categories)} categories`);
+  output(`Content     ${formatBytes(stats.totalBodyBytes)} of SKILL.md text · ${formatNumber(stats.totalFiles)} files`);
+  output(`\n${c.bold('Top categories')}`);
+  output(renderTable(stats.topCategories.slice(0, 12).map((row) => [row.name, formatNumber(row.count)]), ['CATEGORY', 'SKILLS']));
+  output(`\n${c.bold('Top sources')}`);
+  output(renderTable(stats.bySource.slice(0, 12).map((row) => [row.name, formatNumber(row.count)]), ['SOURCE', 'SKILLS']));
 }
 
 function printPack(index, pack, asJson) {
@@ -1090,6 +1177,8 @@ async function main(argv = process.argv.slice(2)) {
   };
   const handlers = {
     search: cmdSearch,
+    recommend: cmdRecommend,
+    stats: cmdStats,
     info: cmdInfo,
     install: cmdInstall,
     remove: cmdRemove,

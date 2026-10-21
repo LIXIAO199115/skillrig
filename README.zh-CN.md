@@ -2,14 +2,14 @@
 
 **Codex 与 80 种编码 Agent 的签名技能市场 + 零依赖安装器。**
 
-**在线注册表：** [lixiao199115.github.io/skillrig](https://lixiao199115.github.io/skillrig/) — 检索 354 条记录、查看检验台账、复制安装命令。
+**在线注册表：** [lixiao199115.github.io/skillrig](https://lixiao199115.github.io/skillrig/) — 检索 7,909 条记录、查看检验台账、复制安装命令。
 
 [![CI](https://github.com/LIXIAO199115/skillrig/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/LIXIAO199115/skillrig/actions/workflows/ci.yml)
 [![CodeQL](https://github.com/LIXIAO199115/skillrig/actions/workflows/codeql.yml/badge.svg?branch=main)](https://github.com/LIXIAO199115/skillrig/actions/workflows/codeql.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-14150f?style=flat-square)](LICENSE)
 [![Node](https://img.shields.io/badge/node-%3E%3D20.11-14150f?style=flat-square)](package.json)
 [![Runtime dependencies](https://img.shields.io/badge/runtime%20deps-0-f04e23?style=flat-square)](package.json)
-[![Skills](https://img.shields.io/badge/skills-354-1f5c45?style=flat-square)](registry/index.json)
+[![Skills](https://img.shields.io/badge/skills-7%2C909-1f5c45?style=flat-square)](registry/index.json)
 [![Agents](https://img.shields.io/badge/agents-80-1f5c45?style=flat-square)](docs/agents.md)
 [![Registry](https://img.shields.io/badge/registry-ed25519%20signed-f04e23?style=flat-square)](registry/index.json.sig)
 [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/LIXIAO199115/skillrig/badge)](https://securityscorecards.dev/viewer/?uri=github.com/LIXIAO199115/skillrig)
@@ -22,7 +22,7 @@ SkillRig 是 `SKILL.md` 智能体技能（Agent Skills）的包管理器、安�
 node bin/skillrig.mjs install codex-cli-workflows --agent codex
 ```
 
-> 内置注册表 354 个技能 · 18 个在本仓库维护 · 336 个索引自 8 个上游仓库 · 15 个被安全门禁拦截 · 零运行时依赖。
+> 内置注册表 7,909 个技能 · 18 个在本仓库维护 · 7,891 个索引自 35 个上游仓库 · 428 个被安全门禁拦截 · 13 个技能包 · 零运行时依赖。
 
 ---
 
@@ -96,10 +96,10 @@ codex plugin add skillrig@skillrig
 
 ```bash
 skillrig verify
-# registry verified: 354 skills, 5 packs
+# registry verified: 7,909 skills, 13 packs
 # key        a159f773dbf9d466
-# digest     sha256:32f794...
-# signed     2026-10-21T16:03:54.591Z
+# digest     sha256:edcb329584e0...
+# signed     2026-10-21T19:04:20.732Z
 ```
 
 每个条目包含信任级别（`official` / `community`）、许可证状态（`permissive` / `copyleft` / `review` / `unlicensed`）、质量分、安全徽章和 `blocked` 标记。
@@ -184,17 +184,17 @@ skillrig publish my-skill --key ~/.skillrig/keys/skillrig.private.pem
 
 | 指标 | 数值 |
 | --- | --- |
-| 技能总数 | 354 |
+| 技能总数 | 7,909 |
 | 本仓库精选维护 | 18 |
-| 上游索引 | 336 |
-| 上游仓库 | 8 |
-| 被安全门禁拦截 | 15 |
-| 技能包 | 5 |
-| 平均质量分 | 79 / 100 |
-| 安全徽章为 clean | 317 |
+| 上游索引 | 7,891 |
+| 上游仓库 | 35 |
+| 被安全门禁拦截 | 428 |
+| 技能包 | 13 |
+| 平均质量分 | 73 / 100 |
+| 安全徽章为 clean | 6,645 |
 | 支持 Agent | 80 |
 
-上游来源：`openai/skills`、`anthropics/skills`、`obra/superpowers`、`addyosmani/agent-skills`、`vercel-labs/skills`、`kepano/obsidian-skills`、`wshobson/agents`、`coreyhaines31/marketingskills`。每个条目固定 commit SHA 并链接回原目录。
+上游来源包括 `openai/skills`、`anthropics/skills`、`google/skills`、`googleworkspace/cli`、`microsoft/SkillOpt`、`cloudflare/security-audit-skill`、`sickn33/antigravity-awesome-skills`、`LeoYeAI/openclaw-master-skills`、`TerminalSkills/skills`、`mukul975/Anthropic-Cybersecurity-Skills`、`thedaviddias/Front-End-Checklist` 等 35 个仓库；完整 commit 与许可证清单见 [`registry/sources.json`](registry/sources.json)。每个条目固定 commit SHA 并链接回原目录。
 
 三个超大仓库只作为外部目录列出、不纳入索引：`github/awesome-copilot`（约 128 MB）、`K-Dense-AI/scientific-agent-skills`（约 471 MB）、`JimLiu/baoyu-skills`（约 34 MB）。
 
@@ -207,6 +207,8 @@ skillrig publish my-skill --key ~/.skillrig/keys/skillrig.private.pem
 | 命令 | 作用 |
 | --- | --- |
 | `skillrig search [query]` | 按名称、描述、标签、分类、来源搜索 |
+| `skillrig recommend <task>` | 按任务描述给技能排序 |
+| `skillrig stats` | 注册表构成、覆盖与主要来源 |
 | `skillrig info <name\|pack>` | 完整元数据、来源、许可证、完整性、安全 |
 | `skillrig install <source...>` | 注册表、GitHub、本地路径、`.skm` 包或 pack |
 | `skillrig remove <name...>` | 只删除受管安装 |
@@ -268,7 +270,7 @@ skillrig publish my-skill --key ~/.skillrig/keys/skillrig.private.pem
 ## 开发
 
 ```bash
-npm test                # 48 个测试，不联网
+npm test                # 51 个测试，不联网
 npm run validate        # 全部技能：质量 + 安全
 npm run build           # 注册表 + 插件 + 站点
 npm run build:registry  # 精选 + 上游 -> registry/index.json

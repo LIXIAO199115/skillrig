@@ -16,3 +16,4 @@ dist/
 test/tmp/
 site/data.json
 .codex-plugin-cache/
+crawl*.log

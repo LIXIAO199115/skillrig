@@ -1,0 +1,15 @@
+{
+  "name": "security-hardening",
+  "title": "Security Hardening",
+  "version": "1.0.0",
+  "description": "Audit an agent skill, a dependency tree, a threat model, and a production surface before anything ships. Each member is scanned and pinned independently.",
+  "skills": [
+    "skill-security-review",
+    "dependency-audit",
+    "security-review",
+    "security-threat-model",
+    "security-audit",
+    "security-best-practices"
+  ],
+  "tags": ["security", "audit", "threat-model", "supply-chain"]
+}

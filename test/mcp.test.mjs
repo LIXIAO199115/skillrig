@@ -7,6 +7,8 @@ test('exposes the full tool surface', () => {
   const names = TOOLS.map((tool) => tool.name);
   for (const name of [
     'skillrig_search',
+    'skillrig_recommend',
+    'skillrig_stats',
     'skillrig_info',
     'skillrig_install',
     'skillrig_remove',
@@ -36,7 +38,7 @@ test('answers initialize and tools/list', async () => {
     assert.ok(init.result.capabilities.tools);
 
     const list = await handleMessage({ jsonrpc: '2.0', id: 2, method: 'tools/list' }, { cwd: dir, home: dir });
-    assert.ok(list.result.tools.length >= 10);
+    assert.equal(list.result.tools.length, 12);
   } finally {
     cleanup();
   }

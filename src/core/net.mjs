@@ -141,7 +141,11 @@ export async function githubCommit(repo, ref, { token = githubToken() } = {}) {
   return commit.sha;
 }
 
-export async function githubTarball(repo, ref, { token = githubToken(), noCache = false } = {}) {
+export async function githubTarball(
+  repo,
+  ref,
+  { token = githubToken(), noCache = false, persist = true, timeout = 90000, maxBytes = 512 * 1024 * 1024 } = {},
+) {
   const key = `tar-${sha256(`${repo}@${ref}`).slice(0, 40)}.tgz`;
   if (!noCache) {
     const hit = readCache(key, { maxAgeMs: /^[0-9a-f]{40}$/i.test(ref || '') ? -1 : 60 * 60 * 1000 });
@@ -150,10 +154,11 @@ export async function githubTarball(repo, ref, { token = githubToken(), noCache 
   const url = `https://api.github.com/repos/${repo}/tarball/${encodeURIComponent(ref || 'HEAD')}`;
   const buffer = await fetchBuffer(url, {
     headers: githubHeaders(token, { Accept: 'application/vnd.github+json' }),
-    timeout: 90000,
+    timeout,
     retries: 2,
+    maxBytes,
   });
-  writeCache(key, buffer);
+  if (persist) writeCache(key, buffer);
   return buffer;
 }
 

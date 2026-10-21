@@ -1,0 +1,15 @@
+{
+  "name": "data-workbench",
+  "title": "Data Workbench",
+  "version": "1.0.0",
+  "description": "Analyze a dataset, read and write spreadsheets, inspect documents, research a market, and review the schema changes that feed the whole pipeline.",
+  "skills": [
+    "data-analysis",
+    "xlsx",
+    "pdf",
+    "market-research",
+    "sql-migration-review",
+    "api-contract-review"
+  ],
+  "tags": ["data", "spreadsheet", "research", "schema"]
+}

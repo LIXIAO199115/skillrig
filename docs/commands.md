@@ -1,6 +1,6 @@
 # Command reference
 
-SkillRig 1.0.0. Every command accepts the [global options](#global-options). Commands that support `--json` write machine-readable output to stdout and nothing else.
+SkillRig 1.1.0. Every command accepts the [global options](#global-options). Commands that support `--json` write machine-readable output to stdout and nothing else.
 
 ```
 skillrig <command> [options]
@@ -19,7 +19,7 @@ skr <command> [options]        alias
 | `-v`, `--verbose` | Print stack traces for unexpected errors |
 | `-h`, `--help` | Command help |
 
-Command aliases: `ls` → `list`, `uninstall`/`rm` → `remove`, `i`/`add` → `install`, `s` → `search`, `docs` → `info`.
+Command aliases: `ls` → `list`, `uninstall`/`rm` → `remove`, `i`/`add` → `install`, `s` → `search`, `rec` → `recommend`, `docs` → `info`.
 
 Exit codes:
 
@@ -53,6 +53,38 @@ skillrig search codex --json
 With no query, results are sorted by quality and limited to 20. With a query, relevance is the default sort and the limit is 25. Blocked entries still appear; `install` is where the block applies.
 
 JSON shape: `{ query, count, skills: [...] }`.
+
+## `recommend`
+
+```
+skillrig recommend <query> [--category <name>] [--agent <id>]
+                   [--include-blocked] [--limit <n>] [--json]
+```
+
+Ranks the registry for a task described in plain language. Name matches weigh most, then tags, categories, repository, and description; coverage across every query token breaks ties. Installable entries beat blocked ones, verified and official entries get a small bonus, and quality is the final tie-breaker.
+
+```bash
+skillrig recommend "review a pull request before merging"
+skillrig recommend "build an MCP server" --agent codex
+skillrig recommend "export a spreadsheet" --json
+```
+
+JSON shape: `{ query, total, results: [{ ...entry, score, matched }] }`.
+
+## `stats`
+
+```
+skillrig stats [--json]
+```
+
+Summarizes the signed index: total and installable entries, trust composition, quality grades, security badges, licences, content volume, top categories, and the upstream repositories that contributed the most entries.
+
+```bash
+skillrig stats
+skillrig stats --json
+```
+
+JSON shape: the object returned by `registryStats()`, including `byTrust`, `byGrade`, `bySecurity`, `byLicense`, `bySource`, and `topCategories`.
 
 ## `info`
 
@@ -412,11 +444,13 @@ Prints the CLI version.
 
 ## MCP tools
 
-The server exposes ten tools over stdio JSON-RPC 2.0:
+The server exposes twelve tools over stdio JSON-RPC 2.0:
 
 | Tool | Purpose |
 | --- | --- |
 | `skillrig_search` | Search the registry |
+| `skillrig_recommend` | Rank skills for a described task |
+| `skillrig_stats` | Registry composition and coverage |
 | `skillrig_info` | Metadata for a skill or pack |
 | `skillrig_install` | Install a skill, gated by the security policy |
 | `skillrig_remove` | Remove tracked installs |

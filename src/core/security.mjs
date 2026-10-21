@@ -73,7 +73,7 @@ export const RULES = [
     category: 'secrets',
     title: 'Combines network calls with credential or token access',
     pattern:
-      /\b(?:curl|wget|invoke-restmethod|invoke-webrequest|fetch)\b[^\n]{0,180}(?:\.ssh|\.aws|\.env|credential|api[_-]?key|access[_-]?token)/i,
+      /\b(?:curl|wget)\b[^\n]{0,240}(?:(?:-d|--data(?:-raw|-binary)?|--upload-file|-F|--form|-T)\b[^\n]{0,160}(?:\.ssh[\\/]|\.aws[\\/]|\.env\b|api[_-]?key|access[_-]?token|private[ _-]?key|password|credentials?\s+(?:file|store))|https?:\/\/[^\s"'`]*[?&](?:api[_-]?key|access[_-]?token|key|token|secret|password)=)/i,
     advice: 'Keep credentials out of network commands. Use an explicit, user-approved secret store.',
   },
   {
@@ -135,12 +135,12 @@ export const RULES = [
     category: 'exfiltration',
     title: 'Instructs sending secrets or private files elsewhere',
     pattern:
-      /\b(?:send|post|upload|exfiltrate|transmit)\b[^\n]{0,90}\b(?:api[ _-]?key|token|credentials?|\.env|private key|password)\b/i,
+      /\b(?:send|upload|exfiltrate|transmit|forward|leak|sync|paste)\b[^\n]{0,90}\b(?:api[ _-]?key|access[ _-]?token|refresh[ _-]?token|private[ _-]?key|credentials?|\.env|password|secret)\b[^\n]{0,60}\b(?:to|into|via|at)\b[^\n]{0,60}(?:https?:\/\/|[\w.-]+@|webhook|pastebin|discord|slack|remote|external|server)/i,
     advice: 'Never move secrets off the machine. Escalate to the user instead.',
   },
   {
     id: 'persistence',
-    severity: 'high',
+    severity: 'medium',
     category: 'persistence',
     title: 'Installs background persistence',
     pattern:
@@ -376,7 +376,11 @@ export function scanFiles(files, { manifest = null, maxFindings = 300, respectSu
     }
     if (lines === null) continue;
 
+    const isInstructionFile =
+      base === 'skill.md' || base === 'agents.md' || base === 'readme.md' || ext === '.md' || ext === '.txt' || ext === '';
+
     for (const rule of RULES) {
+      if (!isInstructionFile && (rule.category === 'prompt-injection' || rule.category === 'obfuscation')) continue;
       for (let index = 0; index < lines.length; index += 1) {
         const line = lines[index];
         if (!line || line.length > 8000) continue;
@@ -385,6 +389,7 @@ export function scanFiles(files, { manifest = null, maxFindings = 300, respectSu
         if (!content) continue;
         const match = rule.pattern.exec(content);
         if (!match) continue;
+        if (rule.id === 'prompt-override' && /\\[sSdDwWb]|r["']|regex|regexp/i.test(content)) continue;
         let severity = rule.severity;
         const before = content.slice(Math.max(0, match.index - 100), match.index);
         if (NEGATION_RE.test(before)) severity = DOWNGRADE[severity];
@@ -421,10 +426,11 @@ export function scanFiles(files, { manifest = null, maxFindings = 300, respectSu
   }
 
   if (manifest) {
-    const broad = manifest.allowedTools?.filter((tool) =>
-      /^(?:\*|bash|shell|exec|write|edit)(?:\(\s*\*+\s*\))?$/i.test(String(tool).trim()),
-    );
-    if (broad && broad.length > 0) {
+    const tools = (manifest.allowedTools || []).map((tool) => String(tool).trim()).filter(Boolean);
+    const wildcard = tools.filter((tool) => /^(?:\*|(?:bash|shell|exec)\(\s*\*+\s*\))$/i.test(tool));
+    const bareShell = tools.filter((tool) => /^(?:bash|shell|exec)$/i.test(tool));
+    const broad = [...wildcard, ...bareShell];
+    if (broad.length > 0) {
       const manifestFile = files.get('SKILL.md');
       const manifestText =
         manifestFile && !isBinary(manifestFile.data ?? manifestFile)
@@ -432,9 +438,9 @@ export function scanFiles(files, { manifest = null, maxFindings = 300, respectSu
           : null;
       emit({
         ruleId: 'broad-tools',
-        severity: 'high',
+        severity: wildcard.length > 0 ? 'high' : 'medium',
         category: 'permissions',
-        title: 'Declares broad tool permissions',
+        title: 'Declares broad shell permissions',
         file: 'SKILL.md',
         line: 1,
         excerpt: `allowed-tools: ${broad.join(', ')}`,

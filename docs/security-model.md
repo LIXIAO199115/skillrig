@@ -45,21 +45,21 @@ Four severity levels plus `info`. The full rule set:
 | `windows-wipe` | critical | destructive | `del /s /q C:\` and equivalent drive-root deletes |
 | `disk-wipe` | critical | destructive | `mkfs*` or `dd ... of=/dev/...` |
 | `secret-file-read` | high | secrets | Reading `.ssh/id_*`, `.aws/credentials`, `.git-credentials`, `.npmrc`, `.netrc`, `.env` |
-| `credential-network` | high | secrets | Network commands combined with credential or token access |
+| `credential-network` | high | secrets | Uploading credentials in a `curl`/`wget` body, or a secret in a URL query string |
 | `embedded-secret` | critical | secrets | AWS keys, GitHub tokens, OpenAI-style keys, private-key headers |
 | `env-exfil` | high | exfiltration | `printenv`/`env` piped to a network client |
 | `encoded-exec` | high | obfuscation | `eval` of base64/atob, `base64 -d \| sh` |
 | `suspicious-exfil-host` | high | exfiltration | Webhook.site, requestbin, ngrok, pastebin, transfer.sh, Discord webhooks |
 | `prompt-override` | high | prompt-injection | "ignore previous instructions" and variants |
 | `hide-from-user` | high | prompt-injection | Instructions not to tell or show the user |
-| `exfil-instruction` | high | exfiltration | Instructions to send keys, tokens, credentials, or private keys elsewhere |
-| `persistence` | high | persistence | `crontab`, `schtasks`, `launchctl`, `systemctl enable`, registry run keys |
+| `exfil-instruction` | high | exfiltration | Instructions to send an API key, access token, credential file, or private key to a destination |
+| `persistence` | medium | persistence | `crontab`, `schtasks`, `launchctl`, `systemctl enable`, registry run keys |
 | `remote-download` | medium | network | Writing a downloaded file to disk |
 | `global-install` | medium | supply-chain | Global or URL-based package installs |
 | `dangerous-git` | medium | destructive | `git reset --hard`, `git clean -fd`, force-push |
 | `sudo` | low | privilege | Any `sudo` use |
 | `chmod-777` | low | privilege | World-writable permissions |
-| `hidden-unicode` | high | obfuscation | Zero-width and bidirectional control characters |
+| `hidden-unicode` | high | obfuscation | Zero-width and bidirectional control characters in instruction files |
 
 ### Structural checks
 
@@ -68,7 +68,7 @@ Four severity levels plus `info`. The full rule set:
 | `sensitive-file` | critical | A bundled `.env`, `.netrc`, `.npmrc`, `.git-credentials`, `id_rsa`, or `id_ed25519` |
 | `executable-file` | medium/high | A shipped `.exe`, `.dll`, `.so`, `.dylib`, `.msi`, `.bat`, `.cmd`, `.com`, `.scr`, `.ps1`, `.sh`, `.bash`, `.zsh`, `.fish` |
 | `html-comment` | medium | An HTML comment containing instruction-like text |
-| `broad-tools` | high | `allowed-tools` containing `*`, bare `bash`, `shell`, `exec`, `write`, or `edit` |
+| `broad-tools` | high / medium | `allowed-tools` containing `*` or `bash(*)` (high), or a bare `bash`, `shell`, or `exec` (medium). `write` and `edit` are normal file tools and are not flagged. |
 
 ### Negation handling
 

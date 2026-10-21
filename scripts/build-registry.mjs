@@ -152,18 +152,20 @@ function main() {
       sources: sources.filter((source) => source.enabled !== false && !source.error && (source.skills ?? 0) > 0).length,
       shadowed,
     },
-    sources: sources.map((source) => ({
-      repo: source.repo,
-      trust: source.trust || 'community',
-      branch: source.branch || null,
-      commit: source.commit || null,
-      license: source.license || null,
-      licenseStatus: licenseStatusFor(source.license),
-      skills: source.skills ?? source.skillCount ?? null,
-      blocked: source.blocked ?? null,
-      skipped: source.skipped ?? null,
-      error: source.error || null,
-    })),
+    sources: sources
+      .filter((source) => source.enabled !== false && (source.skills ?? 0) > 0)
+      .map((source) => ({
+        repo: source.repo,
+        trust: source.trust || 'community',
+        branch: source.branch || null,
+        commit: source.commit || null,
+        license: source.license || null,
+        licenseStatus: licenseStatusFor(source.license),
+        skills: source.skills ?? source.skillCount ?? null,
+        blocked: source.blocked ?? null,
+        skipped: source.skipped ?? null,
+        error: source.error || null,
+      })),
     skills,
     packs: packList,
   };

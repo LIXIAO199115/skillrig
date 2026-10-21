@@ -1,62 +1,458 @@
 {
-  "schemaVersion": 1,
-  "note": "Upstream catalogs are fetched by commit, scored, and scanned. SkillRig stores metadata and content hashes only; installs fetch from the original repository.",
+  "schemaVersion": 2,
+  "note": "Upstream catalogs are fetched by commit, scored, security-scanned, and de-duplicated by skill name and content hash. SkillRig stores metadata and content hashes only; installs fetch from the original repository at the pinned commit.",
   "sources": [
     {
       "repo": "openai/skills",
       "label": "OpenAI",
       "trust": "official",
-      "include": ["skills/.curated/**"],
-      "exclude": ["**/test/**", "**/fixtures/**"]
+      "include": [
+        "skills/.curated/**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/fixtures/**"
+      ]
     },
     {
       "repo": "anthropics/skills",
       "label": "Anthropic",
       "trust": "official",
-      "include": ["skills/**"],
-      "exclude": ["**/test/**", "**/fixtures/**"]
+      "include": [
+        "skills/**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/fixtures/**"
+      ]
     },
     {
-      "repo": "obra/superpowers",
-      "label": "Superpowers",
-      "trust": "community",
-      "include": ["skills/**"],
-      "exclude": ["**/test/**", "**/fixtures/**"]
+      "repo": "google/skills",
+      "label": "Google",
+      "trust": "official",
+      "include": [
+        "skills/**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/fixtures/**"
+      ]
     },
     {
-      "repo": "addyosmani/agent-skills",
-      "label": "Addy Osmani",
-      "trust": "community",
-      "include": ["skills/**"],
-      "exclude": ["**/test/**", "**/fixtures/**"]
+      "repo": "googleworkspace/cli",
+      "label": "Google Workspace",
+      "trust": "official",
+      "include": [
+        "skills/**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/fixtures/**"
+      ],
+      "minQuality": 40
+    },
+    {
+      "repo": "microsoft/SkillOpt",
+      "label": "Microsoft SkillOpt",
+      "trust": "official",
+      "include": [
+        "plugins/**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/fixtures/**"
+      ],
+      "minQuality": 40
+    },
+    {
+      "repo": "cloudflare/security-audit-skill",
+      "label": "Cloudflare",
+      "trust": "official",
+      "include": [
+        "skills/**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/fixtures/**"
+      ]
     },
     {
       "repo": "vercel-labs/skills",
       "label": "Vercel Labs",
       "trust": "official",
-      "include": ["skills/**"],
-      "exclude": ["**/test/**", "**/fixtures/**"]
+      "include": [
+        "skills/**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/fixtures/**"
+      ]
     },
     {
-      "repo": "kepano/obsidian-skills",
-      "label": "kepano",
+      "repo": "alpacahq/alpaca-skills",
+      "label": "Alpaca",
+      "trust": "official",
+      "include": [
+        "skills/**"
+      ],
+      "exclude": [
+        "templates/**",
+        "**/test/**",
+        "**/fixtures/**"
+      ]
+    },
+    {
+      "repo": "mattpocock/skills",
+      "label": "Matt Pocock",
       "trust": "community",
-      "include": ["skills/**"],
-      "exclude": ["**/test/**", "**/fixtures/**"]
+      "include": [
+        "skills/**"
+      ],
+      "exclude": [
+        "skills/in-progress/**",
+        "**/test/**",
+        "**/fixtures/**"
+      ]
+    },
+    {
+      "repo": "affaan-m/ECC",
+      "label": "ECC",
+      "trust": "community",
+      "include": [
+        "skills/**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/fixtures/**"
+      ]
+    },
+    {
+      "repo": "alirezarezvani/claude-skills",
+      "label": "Alireza Rezvani",
+      "trust": "community",
+      "include": [
+        "**"
+      ],
+      "exclude": [
+        ".*/**",
+        "agent-launcher/**",
+        "loop-library/**",
+        "**/test/**",
+        "**/fixtures/**"
+      ]
+    },
+    {
+      "repo": "obra/superpowers",
+      "label": "Superpowers",
+      "trust": "community",
+      "include": [
+        "skills/**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/fixtures/**"
+      ]
+    },
+    {
+      "repo": "TerminalSkills/skills",
+      "label": "Terminal Skills",
+      "trust": "community",
+      "include": [
+        "skills/**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/fixtures/**"
+      ]
+    },
+    {
+      "repo": "mukul975/Anthropic-Cybersecurity-Skills",
+      "label": "Cybersecurity Skills",
+      "trust": "community",
+      "include": [
+        "skills/**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/fixtures/**"
+      ]
+    },
+    {
+      "repo": "thedaviddias/Front-End-Checklist",
+      "label": "Front-End Checklist",
+      "trust": "community",
+      "include": [
+        "skills/**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/fixtures/**"
+      ]
+    },
+    {
+      "repo": "addyosmani/agent-skills",
+      "label": "Addy Osmani",
+      "trust": "community",
+      "include": [
+        "skills/**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/fixtures/**"
+      ]
     },
     {
       "repo": "wshobson/agents",
       "label": "wshobson",
       "trust": "community",
-      "include": ["plugins/*/skills/**"],
-      "exclude": ["**/test/**", "**/fixtures/**"]
+      "include": [
+        "plugins/*/skills/**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/fixtures/**"
+      ]
     },
     {
       "repo": "coreyhaines31/marketingskills",
       "label": "Corey Haines",
       "trust": "community",
-      "include": ["skills/**"],
-      "exclude": ["**/test/**", "**/fixtures/**"]
+      "include": [
+        "skills/**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/fixtures/**"
+      ]
+    },
+    {
+      "repo": "phuryn/pm-skills",
+      "label": "Product Management Skills",
+      "trust": "community",
+      "include": [
+        "*/skills/**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/fixtures/**"
+      ]
+    },
+    {
+      "repo": "seb1n/awesome-ai-agent-skills",
+      "label": "Awesome AI Agent Skills",
+      "trust": "community",
+      "include": [
+        "**"
+      ],
+      "exclude": [
+        ".github/**",
+        "docs/**",
+        "**/test/**",
+        "**/fixtures/**"
+      ]
+    },
+    {
+      "repo": "gamedev-skills/awesome-gamedev-agent-skills",
+      "label": "Game Dev Skills",
+      "trust": "community",
+      "include": [
+        "skills/**",
+        "router/**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/fixtures/**"
+      ]
+    },
+    {
+      "repo": "Donchitos/Claude-Code-Game-Studios",
+      "label": "Game Studios",
+      "trust": "community",
+      "include": [
+        ".claude/skills/**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/fixtures/**"
+      ]
+    },
+    {
+      "repo": "wanshuiyin/Auto-claude-code-research-in-sleep",
+      "label": "Research Automation",
+      "trust": "community",
+      "include": [
+        "skills/**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/fixtures/**"
+      ]
+    },
+    {
+      "repo": "HKUDS/CLI-Anything",
+      "label": "HKUDS CLI-Anything",
+      "trust": "community",
+      "include": [
+        "*/agent-harness/**",
+        "cli-hub-matrix/**",
+        "cli-hub-meta-skill/**",
+        "skills/**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/fixtures/**"
+      ]
+    },
+    {
+      "repo": "AgriciDaniel/claude-seo",
+      "label": "Claude SEO",
+      "trust": "community",
+      "include": [
+        "skills/**",
+        "extensions/*/skills/**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/fixtures/**"
+      ]
+    },
+    {
+      "repo": "bergside/awesome-design-skills",
+      "label": "Design Skills",
+      "trust": "community",
+      "include": [
+        "skills/**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/fixtures/**"
+      ]
+    },
+    {
+      "repo": "kepano/obsidian-skills",
+      "label": "kepano",
+      "trust": "community",
+      "include": [
+        "skills/**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/fixtures/**"
+      ]
+    },
+    {
+      "repo": "machina-sports/sports-skills",
+      "label": "Sports Skills",
+      "trust": "community",
+      "include": [
+        "skills/**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/fixtures/**"
+      ]
+    },
+    {
+      "repo": "arpitg1304/robotics-agent-skills",
+      "label": "Robotics Skills",
+      "trust": "community",
+      "include": [
+        "skills/**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/fixtures/**"
+      ]
+    },
+    {
+      "repo": "nextlevelbuilder/ui-ux-pro-max-skill",
+      "label": "UI/UX Pro Max",
+      "trust": "community",
+      "include": [
+        ".claude/skills/**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/fixtures/**"
+      ]
+    },
+    {
+      "repo": "usestrix/strix",
+      "label": "Strix Security",
+      "trust": "community",
+      "include": [
+        "skills/**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/fixtures/**"
+      ]
+    },
+    {
+      "repo": "JuliusBrussee/caveman",
+      "label": "Caveman",
+      "trust": "community",
+      "include": [
+        "skills/**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/fixtures/**"
+      ]
+    },
+    {
+      "repo": "sickn33/antigravity-awesome-skills",
+      "label": "Antigravity Awesome Skills",
+      "trust": "community",
+      "include": [
+        "skills/**",
+        "plugins/agentic-awesome-skills-claude/**"
+      ],
+      "exclude": [
+        "plugins/agentic-awesome-skills/**",
+        "**/test/**",
+        "**/fixtures/**"
+      ]
+    },
+    {
+      "repo": "LeoYeAI/openclaw-master-skills",
+      "label": "OpenClaw Master Skills",
+      "trust": "community",
+      "include": [
+        "skills/**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/fixtures/**"
+      ]
+    },
+    {
+      "repo": "daymade/claude-code-skills",
+      "label": "Daymade Skills",
+      "trust": "community",
+      "include": [
+        "**"
+      ],
+      "exclude": [
+        ".github/**",
+        "docs/**",
+        "**/test/**",
+        "**/fixtures/**"
+      ]
+    },
+    {
+      "repo": "jpcaparas/superpowers-laravel",
+      "label": "Superpowers Laravel",
+      "trust": "community",
+      "include": [
+        "skills/**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/fixtures/**"
+      ],
+      "enabled": false,
+      "reason": "All 57 skills use namespaced names such as laravel:ai-sdk, which violate the Agent Skills name contract and cannot be installed as a directory on Windows."
     },
     {
       "repo": "github/awesome-copilot",

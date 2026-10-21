@@ -1,0 +1,15 @@
+{
+  "name": "product-launch",
+  "title": "Product Launch",
+  "version": "1.0.0",
+  "description": "Take a product from research to a public release: positioning, search demand, launch copy, release notes, and a reviewable changelog.",
+  "skills": [
+    "market-research",
+    "seo-audit",
+    "copywriting",
+    "release-notes",
+    "changelog",
+    "pr-reviewer"
+  ],
+  "tags": ["product", "marketing", "launch", "release"]
+}

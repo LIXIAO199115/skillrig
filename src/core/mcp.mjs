@@ -1,6 +1,6 @@
 import os from 'node:os';
 import readline from 'node:readline';
-import { loadRegistry, searchSkills, getSkill } from './registry.mjs';
+import { loadRegistry, searchSkills, getSkill, recommendSkills, registryStats } from './registry.mjs';
 import { loadSpec } from './source.mjs';
 import {
   installSkills,
@@ -41,6 +41,30 @@ export const TOOLS = [
       },
       additionalProperties: false,
     },
+  },
+  {
+    name: 'skillrig_recommend',
+    title: 'Recommend skills',
+    description:
+      'Rank registry skills for a task or intent. Matches name, tags, categories and description, then prefers installable, verified and high-quality entries.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        query: { type: 'string', description: 'What the agent needs to do.' },
+        category: { type: 'string' },
+        agent: { type: 'string' },
+        includeBlocked: { type: 'boolean', description: 'Include entries blocked by the security gate.' },
+        limit: { type: 'number', minimum: 1, maximum: 30 },
+      },
+      required: ['query'],
+      additionalProperties: false,
+    },
+  },
+  {
+    name: 'skillrig_stats',
+    title: 'Registry statistics',
+    description: 'Summarize registry size, trust mix, quality grades, security badges, licenses, categories and top sources.',
+    inputSchema: { type: 'object', properties: {}, additionalProperties: false },
   },
   {
     name: 'skillrig_info',
@@ -181,6 +205,22 @@ export async function callTool(name, args = {}, { cwd = process.cwd(), home = os
         })),
       };
     }
+    case 'skillrig_recommend': {
+      const index = loadRegistry();
+      const results = recommendSkills(index, args.query, {
+        category: args.category,
+        agent: args.agent,
+        includeBlocked: Boolean(args.includeBlocked),
+        limit: args.limit || 8,
+      });
+      return {
+        query: args.query,
+        total: index.skills.length,
+        results: results.map(({ _score, _matched, ...entry }) => ({ ...entry, score: _score, matched: _matched })),
+      };
+    }
+    case 'skillrig_stats':
+      return registryStats(loadRegistry());
     case 'skillrig_info': {
       const index = loadRegistry();
       const entry = getSkill(index, args.name);

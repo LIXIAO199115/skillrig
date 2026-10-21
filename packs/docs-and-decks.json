@@ -1,0 +1,16 @@
+{
+  "name": "docs-and-decks",
+  "title": "Docs & Decks",
+  "version": "1.0.0",
+  "description": "Turn source material into readable documents, spreadsheets, slide decks, and images without losing the provenance of a single claim.",
+  "skills": [
+    "docs-writer",
+    "pdf",
+    "docx",
+    "pptx",
+    "xlsx",
+    "slides",
+    "image"
+  ],
+  "tags": ["documents", "slides", "office", "writing"]
+}

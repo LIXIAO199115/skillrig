@@ -1,0 +1,15 @@
+{
+  "name": "agent-builder",
+  "title": "Agent Builder",
+  "version": "1.0.0",
+  "description": "Build the agent layer itself: design a plan, author a skill, wire an MCP server, keep the context budget small, and make the whole setup inspectable.",
+  "skills": [
+    "brainstorming",
+    "writing-plans",
+    "agent-skill-author",
+    "skill-creator",
+    "mcp-server-builder",
+    "context-budget"
+  ],
+  "tags": ["agents", "skills", "mcp", "planning"]
+}
