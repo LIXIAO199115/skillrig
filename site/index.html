@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SkillRig — Signed skill registry for Codex and 80 agents</title>
+<meta name="description" content="A signed, security-audited skill registry and zero-dependency installer for Codex, Claude Code, Cursor, and 77 more agents. 354 skills, Ed25519 signatures, per-file SHA-256, drift detection, and an MCP server.">
+<meta name="theme-color" content="#F2EEE4">
+<meta name="color-scheme" content="light">
+<meta property="og:title" content="SkillRig — Skills with a paper trail">
+<meta property="og:description" content="354 audited skills. 80 agents. One signed registry. Install with zero dependencies.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://lixiao199115.github.io/skillrig/">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "SkillRig",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Windows, macOS, Linux",
+  "description": "A signed skill registry and zero-dependency installer for Codex and 80 coding agents.",
+  "url": "https://lixiao199115.github.io/skillrig/",
+  "codeRepository": "https://github.com/LIXIAO199115/skillrig",
+  "license": "https://opensource.org/licenses/MIT",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}
+</script>
+</head>
+<body>
+<a class="skip-link" href="#registry">Skip to the registry</a>
+<div class="grain" aria-hidden="true"></div>
+
+<header class="masthead">
+  <a class="wordmark" href="#top" aria-label="SkillRig home">
+    <span class="wordmark-mark" aria-hidden="true">S/R</span>
+    <span class="wordmark-text">SKILLRIG</span>
+  </a>
+  <p class="masthead-sub">Signed skill registry <span class="slash">/</span> zero-dependency installer</p>
+  <nav class="masthead-nav" aria-label="Primary">
+    <a href="#registry">Registry</a>
+    <a href="#ledger">Security</a>
+    <a href="#packs">Packs</a>
+    <a href="#codex">Codex</a>
+    <a href="#docs">Docs</a>
+  </nav>
+  <a class="gh-link" href="https://github.com/LIXIAO199115/skillrig">
+    <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.42 7.42 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
+    GitHub <span class="arrow">↗</span>
+  </a>
+</header>
+
+<main id="top">
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero-copy">
+      <p class="eyebrow reveal" style="--d:0ms"><span class="dot"></span> Registry of record — edition 1.0</p>
+      <h1 id="hero-title" class="reveal" style="--d:60ms">Skills with<br>a <em>paper trail.</em></h1>
+      <p class="lede reveal" style="--d:130ms">
+        Agent skills are instructions your code assistant will follow. SkillRig treats them like packages:
+        a signed index, a SHA-256 inside every file, a security scan before install, and a receipt you can audit later.
+      </p>
+      <div class="install-receipt reveal" style="--d:200ms">
+        <div class="receipt-head">
+          <span class="mono-label">Install the rig</span>
+          <button class="copy-btn" type="button" data-copy="git clone https://github.com/LIXIAO199115/skillrig.git && cd skillrig && node bin/skillrig.mjs install codex-cli-workflows" aria-label="Copy install commands">
+            <span class="copy-icon" aria-hidden="true"></span><span class="copy-text">Copy</span>
+          </button>
+        </div>
+        <pre class="receipt-code"><code><span class="prompt">$</span> git clone https://github.com/LIXIAO199115/skillrig.git
+<span class="prompt">$</span> cd skillrig &amp;&amp; node bin/skillrig.mjs install codex-cli-workflows</code></pre>
+        <div class="receipt-foot">
+          <span>Node 20.11+</span><span class="tick">✓</span>
+          <span>0 runtime deps</span><span class="tick">✓</span>
+          <span>signed registry</span><span class="tick">✓</span>
+        </div>
+      </div>
+      <dl class="hero-metrics reveal" style="--d:270ms">
+        <div><dt>Entries</dt><dd data-stat="skills">354</dd></div>
+        <div><dt>Curated</dt><dd data-stat="curated">18</dd></div>
+        <div><dt>Agents</dt><dd data-stat="agents">80</dd></div>
+        <div><dt>Runtime deps</dt><dd>0</dd></div>
+      </dl>
+    </div>
+
+    <aside class="certificate reveal" style="--d:180ms" aria-label="Registry signature certificate">
+      <div class="cert-corner tl" aria-hidden="true"></div>
+      <div class="cert-corner tr" aria-hidden="true"></div>
+      <div class="cert-corner bl" aria-hidden="true"></div>
+      <div class="cert-corner br" aria-hidden="true"></div>
+      <div class="cert-head">
+        <span class="mono-label">Certificate of inspection</span>
+        <span class="cert-no">No. <span data-cert="key">a159f773</span></span>
+      </div>
+      <div class="cert-body">
+        <p class="cert-kicker">This registry is</p>
+        <p class="cert-status">Verified<span class="status-dot" aria-hidden="true"></span></p>
+        <p class="cert-desc">Ed25519 signature over the canonical index. Per-file SHA-256 over every skill. Checked before a single instruction reaches your agent.</p>
+        <dl class="cert-fields">
+          <div><dt>Entries</dt><dd data-cert="entries">354 skills · 5 packs</dd></div>
+          <div><dt>Digest</dt><dd class="mono" data-cert="digest">sha256:32f794…</dd></div>
+          <div><dt>Signed</dt><dd class="mono" data-cert="signed">2026-10-21</dd></div>
+          <div><dt>Status</dt><dd>Valid <span class="ok-mark">✓</span></dd></div>
+        </dl>
+      </div>
+      <div class="cert-stamp" aria-hidden="true">
+        <span>SKILLRIG</span>
+        <strong>VERIFIED</strong>
+        <span>REGISTRY · 1.0</span>
+      </div>
+      <p class="cert-foot">Verify locally: <code>skillrig verify</code></p>
+    </aside>
+  </section>
+
+  <section class="ticker" aria-label="Supported agents">
+    <p class="ticker-label">Reads <span class="mono">SKILL.md</span> — works with</p>
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-track">
+        <span>Codex</span><span>Claude Code</span><span>Cursor</span><span>Gemini CLI</span><span>Qwen Code</span><span>OpenCode</span><span>Qoder</span><span>GitHub Copilot</span><span>Windsurf</span><span>Goose</span><span>OpenHands</span><span>Kimi Code</span><span>Trae</span><span>Warp</span><span>Zed</span><span>Roo Code</span><span>Amp</span><span>Cline</span>
+        <span>Codex</span><span>Claude Code</span><span>Cursor</span><span>Gemini CLI</span><span>Qwen Code</span><span>OpenCode</span><span>Qoder</span><span>GitHub Copilot</span><span>Windsurf</span><span>Goose</span><span>OpenHands</span><span>Kimi Code</span><span>Trae</span><span>Warp</span><span>Zed</span><span>Roo Code</span><span>Amp</span><span>Cline</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="registry" id="registry" aria-labelledby="registry-title">
+    <div class="section-head">
+      <p class="section-no">01 / The registry</p>
+      <h2 id="registry-title">Every skill,<br><em>on the record.</em></h2>
+      <div class="section-aside">
+        <p>Curated entries are maintained in this repository. Upstream entries are pinned to a commit, scanned, and linked back to their source. Blocked entries stay visible so you can see what the gate caught.</p>
+        <p class="registry-count"><span data-stat="skills">354</span> entries · <span data-stat="sources">8</span> upstream repos · <span data-stat="clean">317</span> clean scans</p>
+      </div>
+    </div>
+
+    <div class="registry-toolbar" role="search">
+      <label class="search-field">
+        <span class="mono-label">Search the index</span>
+        <span class="search-input-wrap">
+          <svg class="search-icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5"/><path d="m13 13 4 4"/></svg>
+          <input id="search" type="search" placeholder="Try “migration”, “review”, “codex”…" autocomplete="off" spellcheck="false">
+          <kbd>/</kbd>
+        </span>
+      </label>
+      <div class="filter-chips" role="group" aria-label="Filter registry">
+        <button class="chip is-active" data-filter="all" type="button">All</button>
+        <button class="chip" data-filter="curated" type="button">Curated <span>18</span></button>
+        <button class="chip" data-filter="upstream" type="button">Upstream</button>
+        <button class="chip" data-filter="blocked" type="button">Blocked <span>15</span></button>
+        <button class="chip" data-filter="clean" type="button">Clean scans</button>
+      </div>
+      <div class="select-group">
+        <label>Category
+          <select id="category"><option value="">All categories</option></select>
+        </label>
+        <label>Sort
+          <select id="sort">
+            <option value="quality">Quality</option>
+            <option value="name">Name</option>
+            <option value="security">Security</option>
+            <option value="updated">Updated</option>
+          </select>
+        </label>
+      </div>
+    </div>
+
+    <div class="result-bar">
+      <p id="result-count" aria-live="polite">Loading the registry…</p>
+      <p class="result-hint">Select a row to inspect its signature and install command.</p>
+    </div>
+
+    <div class="table-wrap">
+      <table class="registry-table">
+        <thead>
+          <tr>
+            <th class="col-no" scope="col">No.</th>
+            <th class="col-name" scope="col">Skill</th>
+            <th class="col-desc" scope="col">What it does</th>
+            <th class="col-trust" scope="col">Trust</th>
+            <th class="col-grade" scope="col">Quality</th>
+            <th class="col-sec" scope="col">Security</th>
+            <th class="col-license" scope="col">License</th>
+            <th class="col-act" scope="col"><span class="sr-only">Action</span></th>
+          </tr>
+        </thead>
+        <tbody id="registry-body"></tbody>
+      </table>
+    </div>
+    <div class="table-empty" id="table-empty" hidden>
+      <p class="mono-label">No entries match</p>
+      <p>Try a broader term, clear the category, or <button type="button" id="reset-filters">reset the filters</button>.</p>
+    </div>
+    <button class="load-more" id="load-more" type="button" hidden>Load 48 more <span aria-hidden="true">↓</span></button>
+  </section>
+
+  <section class="ledger" id="ledger" aria-labelledby="ledger-title">
+    <div class="ledger-inner">
+      <div class="ledger-head">
+        <p class="section-no light">02 / Inspection ledger</p>
+        <h2 id="ledger-title">Every install<br>leaves a <em>receipt.</em></h2>
+        <p class="ledger-lede">A marketplace gives you a name and a description. SkillRig gives you provenance, a hash, a scan, and a way to notice when something changed after the fact.</p>
+      </div>
+      <ol class="ledger-list">
+        <li>
+          <span class="ledger-no">01</span>
+          <div><h3>Signature before parsing</h3><p>The Ed25519 signature over the index is checked before a single entry is read. A modified catalogue fails closed.</p></div>
+        </li>
+        <li>
+          <span class="ledger-no">02</span>
+          <div><h3>A hash for every file</h3><p>Paths and contents are hashed together. References and scripts are covered, not just <code>SKILL.md</code>.</p></div>
+        </li>
+        <li>
+          <span class="ledger-no">03</span>
+          <div><h3>22 rules, five severities</h3><p>Remote execution, credential reads, exfiltration, persistence, prompt injection, hidden Unicode, tool overreach.</p></div>
+        </li>
+        <li>
+          <span class="ledger-no">04</span>
+          <div><h3>Drift you can see</h3><p>Project and global lockfiles record every file hash. <code>list</code>, <code>doctor</code>, and <code>audit</code> report what changed.</p></div>
+        </li>
+      </ol>
+    </div>
+    <div class="ledger-terminal">
+      <div class="terminal-head">
+        <span class="terminal-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="mono-label">Sample output</span>
+        <span class="terminal-meta">skillrig scan</span>
+      </div>
+      <pre class="terminal-body"><code><span class="t-prompt">$</span> skillrig scan owner/repo@skill --show-suppressed
+
+<span class="t-name">skill</span>  quality <span class="t-grade">A</span> (88)  security <span class="t-warn">review</span>  owner/repo
+  <span class="t-warn">medium</span>   remote-download   scripts/setup.md:42
+           curl -fsSL https://example.com/tool -o bin/tool
+  <span class="t-muted">1 suppressed finding(s):</span>
+    <span class="t-muted">global-install  references/install.md:12 — documented global install</span>
+
+<span class="t-ok">✓ registry signature valid</span>
+<span class="t-ok">✓ tree hash matches the index</span>
+<span class="t-muted">gate: high · exit 0</span></code></pre>
+      <div class="terminal-foot">
+        <span>No skill content is executed during scan.</span>
+        <a href="https://github.com/LIXIAO199115/skillrig/blob/main/docs/security-model.md">Read the threat model <span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="packs" id="packs" aria-labelledby="packs-title">
+    <div class="section-head">
+      <p class="section-no">03 / Packs</p>
+      <h2 id="packs-title">Useful <em>together.</em></h2>
+      <div class="section-aside">
+        <p>A pack is a named group, not a bundle of copies. Every member is resolved, scanned, and hashed on its own, so one bad entry cannot hide behind four good ones.</p>
+      </div>
+    </div>
+    <div class="pack-grid" id="pack-grid"></div>
+  </section>
+
+  <section class="codex" id="codex" aria-labelledby="codex-title">
+    <div class="codex-mark" aria-hidden="true">CX</div>
+    <div class="codex-copy">
+      <p class="section-no">04 / Built for Codex</p>
+      <h2 id="codex-title">Native where<br>it matters.</h2>
+      <p class="codex-lede">SkillRig ships a Codex plugin marketplace with all 18 curated skills, and an MCP server that exposes search, scan, install, and audit as tools. Both are verified against <code>codex-cli 0.154.0</code>.</p>
+      <div class="codex-commands">
+        <div class="command-line">
+          <code>codex plugin marketplace add LIXIAO199115/skillrig</code>
+          <button class="copy-btn small" type="button" data-copy="codex plugin marketplace add LIXIAO199115/skillrig" aria-label="Copy marketplace command"><span class="copy-icon" aria-hidden="true"></span></button>
+        </div>
+        <div class="command-line">
+          <code>codex plugin add skillrig@skillrig</code>
+          <button class="copy-btn small" type="button" data-copy="codex plugin add skillrig@skillrig" aria-label="Copy plugin command"><span class="copy-icon" aria-hidden="true"></span></button>
+        </div>
+        <div class="command-line">
+          <code>codex mcp add skillrig -- skillrig mcp</code>
+          <button class="copy-btn small" type="button" data-copy="codex mcp add skillrig -- skillrig mcp" aria-label="Copy MCP command"><span class="copy-icon" aria-hidden="true"></span></button>
+        </div>
+      </div>
+      <div class="codex-stats">
+        <div><span>18</span><p>curated skills<br>inside the plugin</p></div>
+        <div><span>10</span><p>MCP tools for<br>search and install</p></div>
+        <div><span>80</span><p>agents read the<br>same file format</p></div>
+      </div>
+      <a class="codex-link" href="https://github.com/LIXIAO199115/skillrig/blob/main/docs/codex.md">Codex integration guide <span aria-hidden="true">↗</span></a>
+    </div>
+    <div class="codex-cache">
+      <p class="mono-label">Plugin cache</p>
+      <code>~/.codex/plugins/cache/<wbr>skillrig/skillrig/1.0.0/</code>
+      <hr>
+      <p class="mono-label">Refresh</p>
+      <code>codex plugin marketplace upgrade</code>
+      <hr>
+      <p class="mono-label">Install target</p>
+      <code>~/.codex/skills/</code>
+      <code>.codex/skills/</code>
+    </div>
+  </section>
+
+  <section class="docs" id="docs" aria-labelledby="docs-title">
+    <div class="section-head">
+      <p class="section-no">05 / Docs</p>
+      <h2 id="docs-title">Read before<br>you <em>install.</em></h2>
+      <div class="section-aside">
+        <p>Every guarantee in this registry has a document behind it, including the parts the scanner cannot check.</p>
+      </div>
+    </div>
+    <div class="docs-grid">
+      <a class="doc-card" href="https://github.com/LIXIAO199115/skillrig#readme"><span class="doc-no">01</span><h3>README</h3><p>Install, commands, registry counts, and the shortest path to a working setup.</p><span class="doc-arrow" aria-hidden="true">↗</span></a>
+      <a class="doc-card" href="https://github.com/LIXIAO199115/skillrig/blob/main/docs/skill-spec.md"><span class="doc-no">02</span><h3>Skill specification</h3><p>Frontmatter, folder contract, progressive disclosure, quality score, and publishing.</p><span class="doc-arrow" aria-hidden="true">↗</span></a>
+      <a class="doc-card" href="https://github.com/LIXIAO199115/skillrig/blob/main/docs/commands.md"><span class="doc-no">03</span><h3>Command reference</h3><p>All 19 commands, every flag, exit codes, JSON shapes, and environment variables.</p><span class="doc-arrow" aria-hidden="true">↗</span></a>
+      <a class="doc-card" href="https://github.com/LIXIAO199115/skillrig/blob/main/docs/security-model.md"><span class="doc-no">04</span><h3>Security model</h3><p>The threat model, all 22 rules, suppression grammar, and the scanner's limits.</p><span class="doc-arrow" aria-hidden="true">↗</span></a>
+      <a class="doc-card" href="https://github.com/LIXIAO199115/skillrig/blob/main/docs/registry.md"><span class="doc-no">05</span><h3>Registry format</h3><p>Index schema, signature record, licence policy, and how to index another repository.</p><span class="doc-arrow" aria-hidden="true">↗</span></a>
+      <a class="doc-card" href="https://github.com/LIXIAO199115/skillrig/blob/main/docs/architecture.md"><span class="doc-no">06</span><h3>Architecture</h3><p>Modules, data flow, the integrity chain, lockfiles, and the registry build pipeline.</p><span class="doc-arrow" aria-hidden="true">↗</span></a>
+      <a class="doc-card" href="https://github.com/LIXIAO199115/skillrig/blob/main/docs/codex.md"><span class="doc-no">07</span><h3>Codex integration</h3><p>Skills directory, plugin marketplace, MCP configuration, and troubleshooting.</p><span class="doc-arrow" aria-hidden="true">↗</span></a>
+      <a class="doc-card" href="https://github.com/LIXIAO199115/skillrig/blob/main/CONTRIBUTING.md"><span class="doc-no">08</span><h3>Contributing</h3><p>Quality gates, security review, upstream sources, and the pull request checklist.</p><span class="doc-arrow" aria-hidden="true">↗</span></a>
+    </div>
+  </section>
+
+  <section class="sources" id="sources" aria-labelledby="sources-title">
+    <div class="section-head compact">
+      <p class="section-no">06 / Provenance</p>
+      <h2 id="sources-title">Where the<br>entries <em>come from.</em></h2>
+      <div class="section-aside">
+        <p>Each indexed repository is pinned to a commit. Large or non-conforming repositories stay listed as external catalogs rather than being silently copied.</p>
+      </div>
+    </div>
+    <div class="sources-table-wrap">
+      <table class="sources-table">
+        <thead><tr><th scope="col">Repository</th><th scope="col">Commit</th><th scope="col">License</th><th scope="col">Skills</th><th scope="col">Status</th></tr></thead>
+        <tbody id="sources-body"></tbody>
+      </table>
+    </div>
+    <p class="sources-note">Skills keep their original licences. SkillRig records the licence and links to the source directory for every indexed entry.</p>
+  </section>
+
+  <section class="closing">
+    <p class="mono-label">End of the ledger</p>
+    <h2>Install something<br><em>you can inspect.</em></h2>
+    <div class="closing-actions">
+      <a class="btn-primary" href="https://github.com/LIXIAO199115/skillrig">Clone the repository <span aria-hidden="true">↗</span></a>
+      <button class="btn-ghost" type="button" data-copy="git clone https://github.com/LIXIAO199115/skillrig.git && cd skillrig && npm link">Copy setup command</button>
+    </div>
+    <p class="closing-note">MIT licensed · no runtime dependencies · Node 20.11+</p>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="footer-brand">
+    <span class="wordmark-mark large" aria-hidden="true">S/R</span>
+    <p>SKILLRIG<br><span>Registry of record</span></p>
+  </div>
+  <div class="footer-col">
+    <p class="mono-label">Product</p>
+    <a href="#registry">Registry</a>
+    <a href="#packs">Packs</a>
+    <a href="#codex">Codex</a>
+    <a href="#ledger">Security</a>
+  </div>
+  <div class="footer-col">
+    <p class="mono-label">Docs</p>
+    <a href="https://github.com/LIXIAO199115/skillrig#readme">README</a>
+    <a href="https://github.com/LIXIAO199115/skillrig/blob/main/docs/commands.md">Commands</a>
+    <a href="https://github.com/LIXIAO199115/skillrig/blob/main/docs/skill-spec.md">Skill spec</a>
+    <a href="https://github.com/LIXIAO199115/skillrig/blob/main/docs/agents.md">Agents</a>
+  </div>
+  <div class="footer-col">
+    <p class="mono-label">Project</p>
+    <a href="https://github.com/LIXIAO199115/skillrig">GitHub</a>
+    <a href="https://github.com/LIXIAO199115/skillrig/issues">Issues</a>
+    <a href="https://github.com/LIXIAO199115/skillrig/blob/main/SECURITY.md">Security policy</a>
+    <a href="https://github.com/LIXIAO199115/skillrig/blob/main/LICENSE">MIT License</a>
+  </div>
+  <div class="footer-bottom">
+    <p>Built and maintained by <a href="https://github.com/LIXIAO199115">Li Xiaocheng</a>.</p>
+    <p class="mono">Edition 1.0 · <span data-cert="year">2026</span> · <a href="#top">Back to top ↑</a></p>
+  </div>
+</footer>
+
+<div class="scrim" id="scrim" hidden></div>
+<aside class="drawer" id="drawer" aria-labelledby="drawer-title" aria-hidden="true">
+  <div class="drawer-inner" id="drawer-inner" role="dialog" aria-modal="true"></div>
+</aside>
+
+<noscript>
+  <div class="noscript">The registry index requires JavaScript. Read it directly at <a href="https://github.com/LIXIAO199115/skillrig/blob/main/registry/index.json">registry/index.json</a> or browse <a href="https://github.com/LIXIAO199115/skillrig">the repository</a>.</div>
+</noscript>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

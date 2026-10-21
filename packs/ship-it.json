@@ -1,0 +1,13 @@
+{
+  "name": "ship-it",
+  "title": "Ship It",
+  "version": "1.0.0",
+  "description": "The path from a fixed bug to a published release: test-first changes, high-signal review, documentation, and a reproducible release with rollback.",
+  "skills": [
+    "test-first-fix",
+    "pr-reviewer",
+    "docs-writer",
+    "release-engineer"
+  ],
+  "tags": ["delivery", "testing", "review", "release"]
+}

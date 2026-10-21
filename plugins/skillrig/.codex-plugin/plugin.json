@@ -1,0 +1,32 @@
+{
+  "name": "skillrig",
+  "version": "1.0.0",
+  "description": "Signed, security-audited skill registry and zero-dependency installer for Codex and every agent that reads SKILL.md.",
+  "author": {
+    "name": "Li Xiaocheng",
+    "url": "https://github.com/LIXIAO199115"
+  },
+  "homepage": "https://lixiao199115.github.io/skillrig/",
+  "repository": "https://github.com/LIXIAO199115/skillrig",
+  "license": "MIT",
+  "keywords": [
+    "codex",
+    "agent-skills",
+    "skill-registry",
+    "security",
+    "mcp"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "SkillRig",
+    "shortDescription": "18 audited skills for Codex, with a signed registry",
+    "longDescription": "SkillRig ships 18 engineering skills for Codex and other SKILL.md agents: CLI workflows, plugin authoring, security review, debugging, release engineering, API and database review. Every skill is quality-scored and security-scanned; the full catalog is Ed25519-signed.",
+    "developerName": "SkillRig",
+    "category": "Development",
+    "capabilities": [
+      "Write",
+      "Review"
+    ],
+    "websiteURL": "https://lixiao199115.github.io/skillrig/"
+  }
+}

@@ -1,0 +1,559 @@
+{
+  "$comment": "Agent skill directories. Paths follow the public Agent Skills ecosystem table (vercel-labs/skills docs/agents.md, MIT) and each vendor docs. Global paths start with ~.",
+  "generatedAt": "2026-10-21T15:03:05.006Z",
+  "agents": [
+    {
+      "id": "adal",
+      "name": "AdaL",
+      "projectPath": ".adal/skills/",
+      "globalPath": "~/.adal/skills/",
+      "docs": null
+    },
+    {
+      "id": "aider-desk",
+      "name": "AiderDesk",
+      "projectPath": ".aider-desk/skills/",
+      "globalPath": "~/.aider-desk/skills/",
+      "docs": null
+    },
+    {
+      "id": "amp",
+      "name": "Amp",
+      "projectPath": ".agents/skills/",
+      "globalPath": "~/.config/agents/skills/",
+      "docs": "https://ampcode.com/manual#agent-skills"
+    },
+    {
+      "id": "antigravity",
+      "name": "Antigravity",
+      "projectPath": ".agents/skills/",
+      "globalPath": "~/.gemini/antigravity/skills/",
+      "docs": null
+    },
+    {
+      "id": "antigravity-cli",
+      "name": "Antigravity CLI",
+      "projectPath": ".agents/skills/",
+      "globalPath": "~/.gemini/antigravity-cli/skills/",
+      "docs": null
+    },
+    {
+      "id": "astrbot",
+      "name": "AstrBot",
+      "projectPath": "data/skills/",
+      "globalPath": "~/.astrbot/data/skills/",
+      "docs": null
+    },
+    {
+      "id": "augment",
+      "name": "Augment",
+      "projectPath": ".augment/skills/",
+      "globalPath": "~/.augment/skills/",
+      "docs": null
+    },
+    {
+      "id": "autohand-code",
+      "name": "Autohand Code CLI",
+      "projectPath": ".autohand/skills/",
+      "globalPath": "~/.autohand/skills/",
+      "docs": null
+    },
+    {
+      "id": "bob",
+      "name": "IBM Bob",
+      "projectPath": ".bob/skills/",
+      "globalPath": "~/.bob/skills/",
+      "docs": null
+    },
+    {
+      "id": "claude-code",
+      "name": "Claude Code",
+      "projectPath": ".claude/skills/",
+      "globalPath": "~/.claude/skills/",
+      "docs": "https://code.claude.com/docs/en/skills"
+    },
+    {
+      "id": "cline",
+      "name": "Cline",
+      "projectPath": ".agents/skills/",
+      "globalPath": "~/.agents/skills/",
+      "docs": "https://docs.cline.bot/features/skills"
+    },
+    {
+      "id": "codearts-agent",
+      "name": "CodeArts Agent",
+      "projectPath": ".codeartsdoer/skills/",
+      "globalPath": "~/.codeartsdoer/skills/",
+      "docs": null
+    },
+    {
+      "id": "codebuddy",
+      "name": "CodeBuddy",
+      "projectPath": ".codebuddy/skills/",
+      "globalPath": "~/.codebuddy/skills/",
+      "docs": null
+    },
+    {
+      "id": "codemaker",
+      "name": "Codemaker",
+      "projectPath": ".codemaker/skills/",
+      "globalPath": "~/.codemaker/skills/",
+      "docs": null
+    },
+    {
+      "id": "codestudio",
+      "name": "Code Studio",
+      "projectPath": ".codestudio/skills/",
+      "globalPath": "~/.codestudio/skills/",
+      "docs": null
+    },
+    {
+      "id": "codex",
+      "name": "Codex",
+      "projectPath": ".agents/skills/",
+      "globalPath": "~/.agents/skills/",
+      "docs": "https://developers.openai.com/codex/skills"
+    },
+    {
+      "id": "command-code",
+      "name": "Command Code",
+      "projectPath": ".commandcode/skills/",
+      "globalPath": "~/.commandcode/skills/",
+      "docs": null
+    },
+    {
+      "id": "continue",
+      "name": "Continue",
+      "projectPath": ".continue/skills/",
+      "globalPath": "~/.continue/skills/",
+      "docs": null
+    },
+    {
+      "id": "cortex",
+      "name": "Cortex Code",
+      "projectPath": ".cortex/skills/",
+      "globalPath": "~/.snowflake/cortex/skills/",
+      "docs": null
+    },
+    {
+      "id": "crush",
+      "name": "Crush",
+      "projectPath": ".crush/skills/",
+      "globalPath": "~/.config/crush/skills/",
+      "docs": null
+    },
+    {
+      "id": "cursor",
+      "name": "Cursor",
+      "projectPath": ".agents/skills/",
+      "globalPath": "~/.cursor/skills/",
+      "docs": "https://cursor.com/docs/context/skills"
+    },
+    {
+      "id": "deepagents",
+      "name": "Deep Agents",
+      "projectPath": ".agents/skills/",
+      "globalPath": "~/.deepagents/agent/skills/",
+      "docs": null
+    },
+    {
+      "id": "devin",
+      "name": "Devin for Terminal",
+      "projectPath": ".devin/skills/",
+      "globalPath": "~/.config/devin/skills/",
+      "docs": null
+    },
+    {
+      "id": "dexto",
+      "name": "Dexto",
+      "projectPath": ".agents/skills/",
+      "globalPath": "~/.agents/skills/",
+      "docs": null
+    },
+    {
+      "id": "droid",
+      "name": "Droid",
+      "projectPath": ".agents/skills/",
+      "globalPath": "~/.factory/skills/",
+      "docs": null
+    },
+    {
+      "id": "eve",
+      "name": "Eve",
+      "projectPath": "agent/skills/",
+      "globalPath": null,
+      "docs": null
+    },
+    {
+      "id": "firebender",
+      "name": "Firebender",
+      "projectPath": ".agents/skills/",
+      "globalPath": "~/.firebender/skills/",
+      "docs": null
+    },
+    {
+      "id": "forgecode",
+      "name": "ForgeCode",
+      "projectPath": ".forge/skills/",
+      "globalPath": "~/.forge/skills/",
+      "docs": null
+    },
+    {
+      "id": "fx",
+      "name": "fx",
+      "projectPath": ".agents/skills/",
+      "globalPath": "~/.agents/skills/",
+      "docs": null
+    },
+    {
+      "id": "gemini-cli",
+      "name": "Gemini CLI",
+      "projectPath": ".agents/skills/",
+      "globalPath": "~/.gemini/skills/",
+      "docs": "https://geminicli.com/docs/cli/skills/"
+    },
+    {
+      "id": "github-copilot",
+      "name": "GitHub Copilot",
+      "projectPath": ".agents/skills/",
+      "globalPath": "~/.copilot/skills/",
+      "docs": "https://docs.github.com/en/copilot/concepts/agents/about-agent-skills"
+    },
+    {
+      "id": "goose",
+      "name": "Goose",
+      "projectPath": ".goose/skills/",
+      "globalPath": "~/.config/goose/skills/",
+      "docs": "https://block.github.io/goose/docs/guides/context-engineering/using-skills"
+    },
+    {
+      "id": "grok",
+      "name": "Grok Build",
+      "projectPath": ".grok/skills/",
+      "globalPath": "~/.grok/skills/",
+      "docs": null
+    },
+    {
+      "id": "hermes-agent",
+      "name": "Hermes Agent",
+      "projectPath": ".hermes/skills/",
+      "globalPath": "~/.hermes/skills/",
+      "docs": null
+    },
+    {
+      "id": "iflow-cli",
+      "name": "iFlow CLI",
+      "projectPath": ".iflow/skills/",
+      "globalPath": "~/.iflow/skills/",
+      "docs": null
+    },
+    {
+      "id": "inference-sh",
+      "name": "inference.sh",
+      "projectPath": ".inferencesh/skills/",
+      "globalPath": "~/.inferencesh/skills/",
+      "docs": null
+    },
+    {
+      "id": "jazz",
+      "name": "Jazz",
+      "projectPath": ".jazz/skills/",
+      "globalPath": "~/.jazz/skills/",
+      "docs": null
+    },
+    {
+      "id": "junie",
+      "name": "Junie",
+      "projectPath": ".junie/skills/",
+      "globalPath": "~/.junie/skills/",
+      "docs": null
+    },
+    {
+      "id": "kilo",
+      "name": "Kilo Code",
+      "projectPath": ".agents/skills/",
+      "globalPath": "~/.kilo/skills/",
+      "docs": null
+    },
+    {
+      "id": "kimchi",
+      "name": "Kimchi",
+      "projectPath": ".kimchi/skills/",
+      "globalPath": "~/.config/kimchi/harness/skills/",
+      "docs": null
+    },
+    {
+      "id": "kimi-code-cli",
+      "name": "Kimi Code CLI",
+      "projectPath": ".agents/skills/",
+      "globalPath": "~/.agents/skills/",
+      "docs": null
+    },
+    {
+      "id": "kiro-cli",
+      "name": "Kiro CLI",
+      "projectPath": ".kiro/skills/",
+      "globalPath": "~/.kiro/skills/",
+      "docs": "https://kiro.dev/docs/cli/custom-agents/configuration-reference/#skill-resources"
+    },
+    {
+      "id": "kode",
+      "name": "Kode",
+      "projectPath": ".kode/skills/",
+      "globalPath": "~/.kode/skills/",
+      "docs": null
+    },
+    {
+      "id": "lingma",
+      "name": "Lingma",
+      "projectPath": ".lingma/skills/",
+      "globalPath": "~/.lingma/skills/",
+      "docs": null
+    },
+    {
+      "id": "loaf",
+      "name": "Loaf",
+      "projectPath": ".agents/skills/",
+      "globalPath": "~/.agents/skills/",
+      "docs": null
+    },
+    {
+      "id": "mcpjam",
+      "name": "MCPJam",
+      "projectPath": ".mcpjam/skills/",
+      "globalPath": "~/.mcpjam/skills/",
+      "docs": null
+    },
+    {
+      "id": "minimax-code",
+      "name": "MiniMax Code",
+      "projectPath": ".minimax/skills/",
+      "globalPath": "~/.minimax/skills/",
+      "docs": null
+    },
+    {
+      "id": "mistral-vibe",
+      "name": "Mistral Vibe",
+      "projectPath": ".vibe/skills/",
+      "globalPath": "~/.vibe/skills/",
+      "docs": null
+    },
+    {
+      "id": "moxby",
+      "name": "Moxby",
+      "projectPath": ".moxby/skills/",
+      "globalPath": "~/.moxby/skills/",
+      "docs": null
+    },
+    {
+      "id": "mux",
+      "name": "Mux",
+      "projectPath": ".mux/skills/",
+      "globalPath": "~/.mux/skills/",
+      "docs": null
+    },
+    {
+      "id": "neovate",
+      "name": "Neovate",
+      "projectPath": ".neovate/skills/",
+      "globalPath": "~/.neovate/skills/",
+      "docs": null
+    },
+    {
+      "id": "ona",
+      "name": "Ona",
+      "projectPath": ".ona/skills/",
+      "globalPath": "~/.ona/skills/",
+      "docs": null
+    },
+    {
+      "id": "openclaw",
+      "name": "OpenClaw",
+      "projectPath": "skills/",
+      "globalPath": "~/.openclaw/skills/",
+      "docs": null
+    },
+    {
+      "id": "opencode",
+      "name": "OpenCode",
+      "projectPath": ".agents/skills/",
+      "globalPath": "~/.config/opencode/skills/",
+      "docs": "https://opencode.ai/docs/skills"
+    },
+    {
+      "id": "openhands",
+      "name": "OpenHands",
+      "projectPath": ".openhands/skills/",
+      "globalPath": "~/.openhands/skills/",
+      "docs": "https://docs.openhands.ai/modules/usage/how-to/using-skills"
+    },
+    {
+      "id": "pi",
+      "name": "Pi",
+      "projectPath": ".agents/skills/",
+      "globalPath": "~/.agents/skills/",
+      "docs": null
+    },
+    {
+      "id": "pochi",
+      "name": "Pochi",
+      "projectPath": ".pochi/skills/",
+      "globalPath": "~/.pochi/skills/",
+      "docs": null
+    },
+    {
+      "id": "posit-assistant",
+      "name": "Posit Assistant",
+      "projectPath": ".posit/assistant/skills/",
+      "globalPath": "~/.posit/assistant/skills/",
+      "docs": null
+    },
+    {
+      "id": "promptscript",
+      "name": "PromptScript",
+      "projectPath": ".agents/skills/",
+      "globalPath": null,
+      "docs": null
+    },
+    {
+      "id": "qoder",
+      "name": "Qoder",
+      "projectPath": ".qoder/skills/",
+      "globalPath": "~/.qoder/skills/",
+      "docs": "https://docs.qoder.com/cli/Skills"
+    },
+    {
+      "id": "qoder-cn",
+      "name": "Qoder CN",
+      "projectPath": ".qoder/skills/",
+      "globalPath": "~/.qoder-cn/skills/",
+      "docs": "https://docs.qoder.com/cli/Skills"
+    },
+    {
+      "id": "qwen-code",
+      "name": "Qwen Code",
+      "projectPath": ".qwen/skills/",
+      "globalPath": "~/.qwen/skills/",
+      "docs": "https://qwenlm.github.io/qwen-code-docs/en/users/features/skills/"
+    },
+    {
+      "id": "reasonix",
+      "name": "Reasonix",
+      "projectPath": ".reasonix/skills/",
+      "globalPath": "~/.reasonix/skills/",
+      "docs": null
+    },
+    {
+      "id": "replit",
+      "name": "Replit",
+      "projectPath": ".agents/skills/",
+      "globalPath": "~/.config/agents/skills/",
+      "docs": null
+    },
+    {
+      "id": "roo",
+      "name": "Roo Code",
+      "projectPath": ".roo/skills/",
+      "globalPath": "~/.roo/skills/",
+      "docs": null
+    },
+    {
+      "id": "rovodev",
+      "name": "Rovo Dev",
+      "projectPath": ".rovodev/skills/",
+      "globalPath": "~/.rovodev/skills/",
+      "docs": null
+    },
+    {
+      "id": "sarvam-code",
+      "name": "Sarvam Code",
+      "projectPath": ".agents/skills/",
+      "globalPath": "~/.agents/skills/",
+      "docs": null
+    },
+    {
+      "id": "tabnine-cli",
+      "name": "Tabnine CLI",
+      "projectPath": ".tabnine/agent/skills/",
+      "globalPath": "~/.tabnine/agent/skills/",
+      "docs": null
+    },
+    {
+      "id": "terramind",
+      "name": "Terramind",
+      "projectPath": ".terramind/skills/",
+      "globalPath": "~/.terramind/skills/",
+      "docs": null
+    },
+    {
+      "id": "tinycloud",
+      "name": "Tinycloud",
+      "projectPath": ".tinycloud/skills/",
+      "globalPath": "~/.tinycloud/skills/",
+      "docs": null
+    },
+    {
+      "id": "trae",
+      "name": "Trae",
+      "projectPath": ".trae/skills/",
+      "globalPath": "~/.trae/skills/",
+      "docs": "https://docs.trae.ai/ide/skills"
+    },
+    {
+      "id": "trae-cn",
+      "name": "Trae CN",
+      "projectPath": ".trae/skills/",
+      "globalPath": "~/.trae-cn/skills/",
+      "docs": null
+    },
+    {
+      "id": "universal",
+      "name": "Universal",
+      "projectPath": ".agents/skills/",
+      "globalPath": "~/.config/agents/skills/",
+      "docs": null
+    },
+    {
+      "id": "warp",
+      "name": "Warp",
+      "projectPath": ".agents/skills/",
+      "globalPath": "~/.agents/skills/",
+      "docs": null
+    },
+    {
+      "id": "windsurf",
+      "name": "Windsurf",
+      "projectPath": ".windsurf/skills/",
+      "globalPath": "~/.codeium/windsurf/skills/",
+      "docs": "https://docs.windsurf.com/windsurf/cascade/skills"
+    },
+    {
+      "id": "zcode",
+      "name": "ZCode",
+      "projectPath": ".zcode/skills/",
+      "globalPath": "~/.zcode/skills/",
+      "docs": null
+    },
+    {
+      "id": "zed",
+      "name": "Zed",
+      "projectPath": ".agents/skills/",
+      "globalPath": "~/.agents/skills/",
+      "docs": null
+    },
+    {
+      "id": "zencoder",
+      "name": "Zencoder",
+      "projectPath": ".zencoder/skills/",
+      "globalPath": "~/.zencoder/skills/",
+      "docs": null
+    },
+    {
+      "id": "zenflow",
+      "name": "Zenflow",
+      "projectPath": ".zencoder/skills/",
+      "globalPath": "~/.zencoder/skills/",
+      "docs": null
+    }
+  ]
+}

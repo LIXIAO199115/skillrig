@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 1,
+  "note": "Upstream catalogs are fetched by commit, scored, and scanned. SkillRig stores metadata and content hashes only; installs fetch from the original repository.",
+  "sources": [
+    {
+      "repo": "openai/skills",
+      "label": "OpenAI",
+      "trust": "official",
+      "include": ["skills/.curated/**"],
+      "exclude": ["**/test/**", "**/fixtures/**"]
+    },
+    {
+      "repo": "anthropics/skills",
+      "label": "Anthropic",
+      "trust": "official",
+      "include": ["skills/**"],
+      "exclude": ["**/test/**", "**/fixtures/**"]
+    },
+    {
+      "repo": "obra/superpowers",
+      "label": "Superpowers",
+      "trust": "community",
+      "include": ["skills/**"],
+      "exclude": ["**/test/**", "**/fixtures/**"]
+    },
+    {
+      "repo": "addyosmani/agent-skills",
+      "label": "Addy Osmani",
+      "trust": "community",
+      "include": ["skills/**"],
+      "exclude": ["**/test/**", "**/fixtures/**"]
+    },
+    {
+      "repo": "vercel-labs/skills",
+      "label": "Vercel Labs",
+      "trust": "official",
+      "include": ["skills/**"],
+      "exclude": ["**/test/**", "**/fixtures/**"]
+    },
+    {
+      "repo": "kepano/obsidian-skills",
+      "label": "kepano",
+      "trust": "community",
+      "include": ["skills/**"],
+      "exclude": ["**/test/**", "**/fixtures/**"]
+    },
+    {
+      "repo": "wshobson/agents",
+      "label": "wshobson",
+      "trust": "community",
+      "include": ["plugins/*/skills/**"],
+      "exclude": ["**/test/**", "**/fixtures/**"]
+    },
+    {
+      "repo": "coreyhaines31/marketingskills",
+      "label": "Corey Haines",
+      "trust": "community",
+      "include": ["skills/**"],
+      "exclude": ["**/test/**", "**/fixtures/**"]
+    },
+    {
+      "repo": "github/awesome-copilot",
+      "label": "GitHub Awesome Copilot",
+      "trust": "community",
+      "enabled": false,
+      "reason": "Repository is ~128 MB; a full checkout per install is unacceptable. Listed as an external catalog in the docs instead."
+    },
+    {
+      "repo": "K-Dense-AI/scientific-agent-skills",
+      "label": "K-Dense Scientific Skills",
+      "trust": "community",
+      "enabled": false,
+      "reason": "Repository is ~471 MB and dominated by scientific datasets. Listed as an external catalog in the docs instead."
+    },
+    {
+      "repo": "JimLiu/baoyu-skills",
+      "label": "Baoyu Skills",
+      "trust": "community",
+      "enabled": false,
+      "reason": "Repository is ~34 MB, mostly image assets. Not indexed to keep installs small."
+    }
+  ]
+}

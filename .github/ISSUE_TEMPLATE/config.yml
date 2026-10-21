@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Questions and ideas
+    url: https://github.com/LIXIAO199115/skillrig/discussions
+    about: Ask for help, compare agents, or propose a direction without filing a bug.
+  - name: Security report
+    url: https://github.com/LIXIAO199115/skillrig/security/advisories/new
+    about: Report a vulnerability privately. Do not open a public issue.

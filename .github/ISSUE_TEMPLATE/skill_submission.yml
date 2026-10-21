@@ -1,0 +1,57 @@
+name: Skill submission
+description: Propose a skill or an upstream repository for the registry.
+title: '[skill] '
+body:
+  - type: markdown
+    attributes:
+      value: |
+        SkillRig indexes skills with a pinned commit, a licence, a quality score, and a security scan. A submission is a request for review, not an automatic listing.
+  - type: input
+    id: name
+    attributes:
+      label: Skill name
+      description: Lowercase, hyphenated, and identical to the folder name.
+      placeholder: release-engineer
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Source URL
+      description: Link to the skill folder or repository. Pin a commit if you can.
+      placeholder: https://github.com/owner/repo/tree/<commit>/skills/<name>
+    validations:
+      required: true
+  - type: input
+    id: license
+    attributes:
+      label: Licence
+      description: SPDX identifier from the source repository. Write "none" if no licence is declared.
+      placeholder: MIT
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: What does it do?
+      description: One paragraph. Include when an agent should activate it and what it reads or runs.
+    validations:
+      required: true
+  - type: textarea
+    id: risk
+    attributes:
+      label: Execution surface
+      description: List scripts, shell commands, network calls, credentials, or files the skill touches. Write "none" if it is instructions only.
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Submission checks
+      options:
+        - label: The folder contains a valid SKILL.md with matching name and description.
+          required: true
+        - label: I am the author, or the licence permits redistribution and indexing.
+          required: true
+        - label: The skill contains no secrets, tokens, or private endpoints.
+          required: true

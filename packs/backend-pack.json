@@ -1,0 +1,13 @@
+{
+  "name": "backend-pack",
+  "title": "Backend Pack",
+  "version": "1.0.0",
+  "description": "Contracts, migrations, latency, and incidents: the four reviews a backend change should pass before and after production traffic.",
+  "skills": [
+    "api-contract-review",
+    "sql-migration-review",
+    "performance-profile",
+    "incident-postmortem"
+  ],
+  "tags": ["backend", "api", "database", "reliability"]
+}

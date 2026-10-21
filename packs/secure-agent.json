@@ -1,0 +1,13 @@
+{
+  "name": "secure-agent",
+  "title": "Secure Agent",
+  "version": "1.0.0",
+  "description": "Audit what an agent loads and what it can reach: skill and plugin threat review, dependency provenance, and MCP server hardening.",
+  "skills": [
+    "skill-security-review",
+    "agent-skill-author",
+    "dependency-audit",
+    "mcp-server-builder"
+  ],
+  "tags": ["security", "supply-chain", "mcp", "review"]
+}

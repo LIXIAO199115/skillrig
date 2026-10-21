@@ -1,0 +1,14 @@
+{
+  "name": "codex-starter",
+  "title": "Codex Starter",
+  "version": "1.0.0",
+  "description": "Everything a Codex user needs in the first week: operate the CLI, map an unfamiliar repository, write skills and plugins that load correctly, and keep the context window lean.",
+  "skills": [
+    "codex-cli-workflows",
+    "repo-onboarding",
+    "agent-skill-author",
+    "codex-plugin-author",
+    "context-budget"
+  ],
+  "tags": ["codex", "starter", "skills", "plugins"]
+}

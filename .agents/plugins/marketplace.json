@@ -1,0 +1,20 @@
+{
+  "name": "skillrig",
+  "interface": {
+    "displayName": "SkillRig"
+  },
+  "plugins": [
+    {
+      "name": "skillrig",
+      "source": {
+        "source": "local",
+        "path": "./plugins/skillrig"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_USE"
+      },
+      "category": "Development"
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://lixiao199115.github.io/skillrig/sitemap.xml

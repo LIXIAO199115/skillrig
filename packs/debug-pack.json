@@ -1,0 +1,13 @@
+{
+  "name": "debug-pack",
+  "title": "Debug Pack",
+  "version": "1.0.0",
+  "description": "Diagnose without retry loops: shell and cross-platform failures, reproducible bug fixes, lost Git work, and measured performance work.",
+  "skills": [
+    "terminal-debugger",
+    "test-first-fix",
+    "git-recovery",
+    "performance-profile"
+  ],
+  "tags": ["debugging", "shell", "git", "performance"]
+}

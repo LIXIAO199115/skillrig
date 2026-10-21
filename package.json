@@ -1,0 +1,73 @@
+{
+  "name": "skillrig",
+  "version": "1.0.0",
+  "description": "Signed, security-audited skill registry and zero-dependency installer for Codex and every agent that reads SKILL.md.",
+  "type": "module",
+  "bin": {
+    "skillrig": "bin/skillrig.mjs",
+    "skr": "bin/skillrig.mjs"
+  },
+  "exports": {
+    ".": "./src/index.mjs"
+  },
+  "files": [
+    "bin",
+    "src",
+    "skills",
+    "packs",
+    "registry",
+    "plugins",
+    ".agents",
+    "docs",
+    "README.md",
+    "README.zh-CN.md",
+    "LICENSE",
+    "SECURITY.md",
+    "CHANGELOG.md"
+  ],
+  "engines": {
+    "node": ">=20.11"
+  },
+  "scripts": {
+    "test": "node --test",
+    "lint": "node scripts/lint.mjs",
+    "validate": "node scripts/validate-skills.mjs",
+    "build": "node scripts/build-registry.mjs && node scripts/build-plugin.mjs && node scripts/build-site.mjs",
+    "build:registry": "node scripts/build-registry.mjs",
+    "build:plugin": "node scripts/build-plugin.mjs",
+    "build:site": "node scripts/build-site.mjs",
+    "crawl": "node scripts/crawl.mjs",
+    "sign": "node scripts/sign-registry.mjs",
+    "verify": "node scripts/verify-registry.mjs",
+    "smoke": "node scripts/smoke.mjs",
+    "prepack": "node scripts/build-plugin.mjs && node scripts/build-site.mjs",
+    "check:plugin": "node scripts/build-plugin.mjs --check"
+  },
+  "keywords": [
+    "codex",
+    "openai-codex",
+    "agent-skills",
+    "skills",
+    "skill-manager",
+    "package-manager",
+    "mcp",
+    "ai-agents",
+    "claude-code",
+    "cursor",
+    "security",
+    "supply-chain"
+  ],
+  "author": {
+    "name": "Li Xiaocheng",
+    "url": "https://github.com/LIXIAO199115"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LIXIAO199115/skillrig.git"
+  },
+  "homepage": "https://lixiao199115.github.io/skillrig/",
+  "bugs": {
+    "url": "https://github.com/LIXIAO199115/skillrig/issues"
+  }
+}

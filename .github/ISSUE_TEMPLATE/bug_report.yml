@@ -1,0 +1,63 @@
+name: Bug report
+description: Something in the CLI, registry, installer, or site is wrong.
+title: '[bug] '
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting. Please run `skillrig verify` first — a failed signature check explains a surprising number of install errors.
+  - type: input
+    id: version
+    attributes:
+      label: SkillRig version
+      description: Output of `node bin/skillrig.mjs --version`.
+      placeholder: 1.0.0
+    validations:
+      required: true
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating system
+      options:
+        - Linux
+        - macOS
+        - Windows
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: node
+    attributes:
+      label: Node.js version
+      placeholder: v22.11.0
+    validations:
+      required: true
+  - type: textarea
+    id: command
+    attributes:
+      label: Command and output
+      description: Paste the exact command and the full output. Use `--verbose` if the error is unexpected.
+      render: shell
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: verify
+    attributes:
+      label: Registry verification
+      description: Paste the output of `node bin/skillrig.mjs verify`.
+      render: shell
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: I searched existing issues for the same problem.
+          required: true
+        - label: I removed secrets, tokens, and private paths from the output above.
+          required: true
