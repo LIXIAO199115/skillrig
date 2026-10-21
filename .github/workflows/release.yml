@@ -22,7 +22,9 @@ jobs:
           npm run lint
           npm run verify
       - name: Build package
-        run: npm pack --pack-destination dist
+        run: |
+          mkdir -p dist
+          npm pack --pack-destination dist
       - name: Checksums
         run: cd dist && sha256sum *.tgz > SHA256SUMS
       - name: Publish release
