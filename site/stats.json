@@ -1,0 +1,36 @@
+{
+  "schema": "skillrig.stats.v1",
+  "name": "skillrig",
+  "version": "1.2.0",
+  "generatedAt": "2026-10-22T06:24:29.276Z",
+  "registry": {
+    "entries": 15275,
+    "verifiedInstallable": 14684,
+    "blocked": 591,
+    "curated": 18,
+    "official": 1150,
+    "community": 14107,
+    "sourcesIndexed": 76,
+    "packs": 13,
+    "categories": 2119,
+    "averageQuality": 73,
+    "cleanScans": 13266,
+    "filesHashed": 60461,
+    "bodyLines": 3493750,
+    "licenses": {
+      "permissive": 13829,
+      "review": 1283,
+      "copyleft": 126,
+      "unlicensed": 37
+    }
+  },
+  "integrity": {
+    "signature": "ed25519",
+    "keyId": "a159f773dbf9d466",
+    "digest": "sha256:7d6bc00cd934581986d80c506c5ac3ad65e411d089181790eb87dc8ed3b9840a",
+    "signedAt": "2026-10-22T06:24:30.323Z"
+  },
+  "agents": 80,
+  "mcpTools": 12,
+  "methodology": "https://github.com/LIXIAO199115/skillrig/blob/main/docs/registry.md#verification"
+}

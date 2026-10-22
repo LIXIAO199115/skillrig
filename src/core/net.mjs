@@ -33,7 +33,7 @@ function sleep(ms) {
 
 export async function fetchBuffer(
   url,
-  { headers = {}, timeout = DEFAULT_TIMEOUT, retries = DEFAULT_RETRIES, maxBytes = 128 * 1024 * 1024 } = {},
+  { headers = {}, timeout = DEFAULT_TIMEOUT, retries = DEFAULT_RETRIES, maxBytes = 128 * 1024 * 1024, method = 'GET', body = undefined } = {},
 ) {
   let lastError;
   for (let attempt = 0; attempt <= retries; attempt += 1) {
@@ -41,6 +41,8 @@ export async function fetchBuffer(
     const timer = setTimeout(() => controller.abort(), timeout);
     try {
       const response = await fetch(url, {
+        method,
+        body,
         headers: { 'User-Agent': `skillrig/${packageInfo().version}`, ...headers },
         redirect: 'follow',
         signal: controller.signal,
@@ -139,6 +141,105 @@ export async function githubCommit(repo, ref, { token = githubToken() } = {}) {
   }
   writeCache(key, Buffer.from(JSON.stringify({ sha: commit.sha, date: commit.commit?.committer?.date || null })));
   return commit.sha;
+}
+
+export async function githubTree(repo, ref, { token = githubToken(), noCache = false } = {}) {
+  const key = `tree-${sha256(`${repo}@${ref}`).slice(0, 40)}.json`;
+  if (!noCache) {
+    const hit = readCache(key, { maxAgeMs: -1 });
+    if (hit) return JSON.parse(hit.toString('utf8'));
+  }
+  const data = await fetchJson(
+    `https://api.github.com/repos/${repo}/git/trees/${encodeURIComponent(ref)}?recursive=1`,
+    { headers: githubHeaders(token), timeout: 90000, maxBytes: 64 * 1024 * 1024 },
+  );
+  if (!Array.isArray(data.tree)) {
+    throw new SkillRigError(`Could not read tree for ${repo}@${ref}`, { code: 'ERR_GIT_TREE' });
+  }
+  const result = {
+    truncated: Boolean(data.truncated),
+    tree: data.tree
+      .filter((entry) => entry.type === 'blob')
+      .map((entry) => ({ path: entry.path, sha: entry.sha, size: entry.size || 0, mode: entry.mode })),
+  };
+  writeCache(key, Buffer.from(JSON.stringify(result)));
+  return result;
+}
+
+export async function githubBlob(repo, sha, { token = githubToken(), noCache = false } = {}) {
+  const key = `blob-${sha}.bin`;
+  if (!noCache) {
+    const hit = readCache(key, { maxAgeMs: -1 });
+    if (hit) return hit;
+  }
+  const data = await fetchJson(`https://api.github.com/repos/${repo}/git/blobs/${sha}`, {
+    headers: githubHeaders(token),
+    timeout: 60000,
+    maxBytes: 16 * 1024 * 1024,
+  });
+  if (data.encoding !== 'base64' || typeof data.content !== 'string') {
+    throw new SkillRigError(`Unexpected blob encoding for ${repo}@${sha}`, { code: 'ERR_GIT_BLOB' });
+  }
+  const buffer = Buffer.from(data.content.replace(/\s+/g, ''), 'base64');
+  writeCache(key, buffer);
+  return buffer;
+}
+
+export async function githubBlobsBatch(repo, shas, { token = githubToken(), noCache = false, batchSize = 40 } = {}) {
+  const [owner, name] = String(repo).split('/');
+  if (!owner || !name) throw new SkillRigError(`Invalid repository: ${repo}`, { code: 'ERR_REPO' });
+  const result = new Map();
+  const missing = [];
+  for (const sha of [...new Set(shas)]) {
+    if (!/^[0-9a-f]{40}$/i.test(sha)) throw new SkillRigError(`Invalid blob SHA: ${sha}`, { code: 'ERR_GIT_BLOB' });
+    if (!noCache) {
+      const hit = readCache(`blob-${sha}.bin`, { maxAgeMs: -1 });
+      if (hit) {
+        result.set(sha, hit);
+        continue;
+      }
+    }
+    missing.push(sha);
+  }
+  for (let offset = 0; offset < missing.length; offset += batchSize) {
+    const chunk = missing.slice(offset, offset + batchSize);
+    const fields = chunk
+      .map((sha, index) => `b${index}: object(oid: "${sha}") { ... on Blob { oid isBinary byteSize text } }`)
+      .join('\n');
+    const query = `query($owner: String!, $name: String!) { repository(owner: $owner, name: $name) { ${fields} } }`;
+    const data = await fetchJson('https://api.github.com/graphql', {
+      method: 'POST',
+      headers: { ...githubHeaders(token), 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query, variables: { owner, name } }),
+      timeout: 120000,
+      retries: 2,
+      maxBytes: 128 * 1024 * 1024,
+    });
+    if (Array.isArray(data.errors) && data.errors.length > 0) {
+      throw new SkillRigError(`GitHub GraphQL: ${data.errors[0].message}`, { code: 'ERR_GIT_BLOB' });
+    }
+    const repository = data.data?.repository;
+    if (!repository) throw new SkillRigError(`GitHub GraphQL returned no repository for ${repo}`, { code: 'ERR_GIT_BLOB' });
+    const fallback = [];
+    for (let index = 0; index < chunk.length; index += 1) {
+      const blob = repository[`b${index}`];
+      if (!blob || blob.isBinary || typeof blob.text !== 'string') {
+        fallback.push(chunk[index]);
+        continue;
+      }
+      const buffer = Buffer.from(blob.text, 'utf8');
+      if (blob.byteSize && buffer.length !== blob.byteSize) {
+        fallback.push(chunk[index]);
+        continue;
+      }
+      writeCache(`blob-${chunk[index]}.bin`, buffer);
+      result.set(chunk[index], buffer);
+    }
+    for (const sha of fallback) {
+      result.set(sha, await githubBlob(repo, sha, { token, noCache }));
+    }
+  }
+  return result;
 }
 
 export async function githubTarball(

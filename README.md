@@ -2,7 +2,7 @@
 
 **A signed skill registry and zero-dependency installer for Codex and 80 coding agents.**
 
-**Live registry:** [lixiao199115.github.io/skillrig](https://lixiao199115.github.io/skillrig/) — search 7,909 entries, read the inspection ledger, copy install commands.
+**Live registry:** [lixiao199115.github.io/skillrig](https://lixiao199115.github.io/skillrig/) — search 15,275 entries, read the inspection ledger, copy install commands.
 
 [![CI](https://github.com/LIXIAO199115/skillrig/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/LIXIAO199115/skillrig/actions/workflows/ci.yml)
 [![CodeQL](https://github.com/LIXIAO199115/skillrig/actions/workflows/codeql.yml/badge.svg?branch=main)](https://github.com/LIXIAO199115/skillrig/actions/workflows/codeql.yml)
@@ -16,13 +16,15 @@
 
 SkillRig is a package manager, security scanner, and curated registry for `SKILL.md` agent skills. It works with Codex, Claude Code, Cursor, Gemini CLI, Qwen Code, OpenCode, Qoder, and [72 more agents](docs/agents.md) — because they all read the same format.
 
+It is also the world's largest **verified, signed, installable** skill registry. "Verified" has a fixed meaning here: a valid `SKILL.md`, a unique name after content deduplication, SHA-256 hashes over every selected file, a 22-rule security scan, and an entry inside an Ed25519-signed index. Raw scrape counts do not enter this number. The live [registry comparison](https://lixiao199115.github.io/skillrig/#record) and [stats.json](https://lixiao199115.github.io/skillrig/stats.json) publish the evidence and the current totals.
+
 Most skill collections ask you to trust a git clone. SkillRig gives every install a paper trail: a signed index, per-file SHA-256 hashes, a security scan with severity gates, a lockfile with drift detection, and a local audit command.
 
 ```bash
 node bin/skillrig.mjs install codex-cli-workflows --agent codex
 ```
 
-> 7,909 skills in the bundled registry · 18 curated and maintained here · 7,891 indexed from 35 upstream repositories · 428 blocked by the security gate · 13 packs · 0 runtime dependencies.
+> 15,275 skills in the bundled registry · 18 curated and maintained here · 15,257 indexed from 76 upstream repositories · 591 blocked by the security gate · 13 packs · 0 runtime dependencies.
 
 ---
 
@@ -96,10 +98,10 @@ The plugin exposes all 18 curated skills inside Codex. Codex caches the plugin a
 
 ```bash
 skillrig verify
-# registry verified: 7,909 skills, 13 packs
+# registry verified: 15,275 skills, 13 packs
 # key        a159f773dbf9d466
-# digest     sha256:edcb329584e0...
-# signed     2026-10-21T19:04:20.732Z
+# digest     sha256:7d6bc00cd934...
+# signed     2026-10-22T06:24:30.323Z
 ```
 
 Registry entries carry trust level (`official`, `community`), license status (`permissive`, `copyleft`, `review`, `unlicensed`), quality score, security badge, and a `blocked` flag.
@@ -186,19 +188,19 @@ skillrig publish my-skill --key ~/.skillrig/keys/skillrig.private.pem
 
 | Metric | Value |
 | --- | --- |
-| Total skills | 7,909 |
+| Total skills | 15,275 |
 | Curated and maintained in this repo | 18 |
-| Indexed from upstream repositories | 7,891 |
-| Upstream repositories | 35 |
-| Blocked by the security gate | 428 |
+| Indexed from upstream repositories | 15,257 |
+| Upstream repositories | 76 |
+| Blocked by the security gate | 591 |
 | Packs | 13 |
 | Average quality score | 73 / 100 |
-| Clean security badge | 6,645 |
+| Clean security badge | 13,266 |
 | Supported agents | 80 |
 
-Upstream sources include `openai/skills`, `anthropics/skills`, `google/skills`, `googleworkspace/cli`, `microsoft/SkillOpt`, `cloudflare/security-audit-skill`, `sickn33/antigravity-awesome-skills`, `LeoYeAI/openclaw-master-skills`, `TerminalSkills/skills`, `mukul975/Anthropic-Cybersecurity-Skills`, `thedaviddias/Front-End-Checklist`, and 24 more. The full 35-repository provenance table, with commit SHAs and license status, is in [`registry/sources.json`](registry/sources.json). Each indexed skill pins a commit SHA and links back to the exact directory.
+Upstream sources include `openai/skills`, `anthropics/skills`, `google/skills`, `googleworkspace/cli`, `microsoft/SkillOpt`, `cloudflare/security-audit-skill`, `sickn33/antigravity-awesome-skills`, `LeoYeAI/openclaw-master-skills`, `TerminalSkills/skills`, `mukul975/Anthropic-Cybersecurity-Skills`, `thedaviddias/Front-End-Checklist`, and 65 more. The full 76-repository provenance table, with commit SHAs and license status, is in [`registry/sources.json`](registry/sources.json). Each indexed skill pins a commit SHA and links back to the exact directory.
 
-Three large repositories are listed as external catalogs rather than indexed, to keep installs small: `github/awesome-copilot` (~128 MB), `K-Dense-AI/scientific-agent-skills` (~471 MB), and `JimLiu/baoyu-skills` (~34 MB).
+Two repositories are listed but not indexed. `JimLiu/baoyu-skills` (~34 MB, mostly image assets) is excluded to keep installs small, and `jpcaparas/superpowers-laravel` uses namespaced names such as `laravel:ai-sdk` that cannot be installed as a directory on Windows. Both records stay in `registry/sources.json` with the reason.
 
 ### The 18 curated skills
 

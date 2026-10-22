@@ -2,7 +2,7 @@
 
 **Codex 与 80 种编码 Agent 的签名技能市场 + 零依赖安装器。**
 
-**在线注册表：** [lixiao199115.github.io/skillrig](https://lixiao199115.github.io/skillrig/) — 检索 7,909 条记录、查看检验台账、复制安装命令。
+**在线注册表：** [lixiao199115.github.io/skillrig](https://lixiao199115.github.io/skillrig/) — 检索 15,275 条记录、查看检验台账、复制安装命令。
 
 [![CI](https://github.com/LIXIAO199115/skillrig/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/LIXIAO199115/skillrig/actions/workflows/ci.yml)
 [![CodeQL](https://github.com/LIXIAO199115/skillrig/actions/workflows/codeql.yml/badge.svg?branch=main)](https://github.com/LIXIAO199115/skillrig/actions/workflows/codeql.yml)
@@ -16,13 +16,15 @@
 
 SkillRig 是 `SKILL.md` 智能体技能（Agent Skills）的包管理器、安全扫描器和精选注册表。Codex、Claude Code、Cursor、Gemini CLI、Qwen Code、OpenCode、Qoder 等 [80 种 Agent](docs/agents.md) 读取同一套技能格式，SkillRig 负责把它们安全地装到正确位置。
 
+它也是全球规模最大的**已验证、已签名、可安装**技能注册表。“已验证”在这里有固定口径：`SKILL.md` 能解析、名称去重后唯一、所选文件逐个 SHA-256、通过 22 条规则的安全扫描、并且收录在 Ed25519 签名的索引里。抓取到的原始文件数不计入这个数字。在线[注册表对比](https://lixiao199115.github.io/skillrig/#record)与 [stats.json](https://lixiao199115.github.io/skillrig/stats.json) 公开口径和当前总数。
+
 大多数技能集合让你直接 `git clone` 然后信任里面的文件。SkillRig 给每次安装留下可核对的凭证：签名索引、逐文件 SHA-256、安装前安全扫描、锁文件与漂移检测、本地审计命令。
 
 ```bash
 node bin/skillrig.mjs install codex-cli-workflows --agent codex
 ```
 
-> 内置注册表 7,909 个技能 · 18 个在本仓库维护 · 7,891 个索引自 35 个上游仓库 · 428 个被安全门禁拦截 · 13 个技能包 · 零运行时依赖。
+> 内置注册表 15,275 个技能 · 18 个在本仓库维护 · 15,257 个索引自 76 个上游仓库 · 591 个被安全门禁拦截 · 13 个技能包 · 零运行时依赖。
 
 ---
 
@@ -96,10 +98,10 @@ codex plugin add skillrig@skillrig
 
 ```bash
 skillrig verify
-# registry verified: 7,909 skills, 13 packs
+# registry verified: 15,275 skills, 13 packs
 # key        a159f773dbf9d466
-# digest     sha256:edcb329584e0...
-# signed     2026-10-21T19:04:20.732Z
+# digest     sha256:7d6bc00cd934...
+# signed     2026-10-22T06:24:30.323Z
 ```
 
 每个条目包含信任级别（`official` / `community`）、许可证状态（`permissive` / `copyleft` / `review` / `unlicensed`）、质量分、安全徽章和 `blocked` 标记。
@@ -184,19 +186,19 @@ skillrig publish my-skill --key ~/.skillrig/keys/skillrig.private.pem
 
 | 指标 | 数值 |
 | --- | --- |
-| 技能总数 | 7,909 |
+| 技能总数 | 15,275 |
 | 本仓库精选维护 | 18 |
-| 上游索引 | 7,891 |
-| 上游仓库 | 35 |
-| 被安全门禁拦截 | 428 |
+| 上游索引 | 15,257 |
+| 上游仓库 | 76 |
+| 被安全门禁拦截 | 591 |
 | 技能包 | 13 |
 | 平均质量分 | 73 / 100 |
-| 安全徽章为 clean | 6,645 |
+| 安全徽章为 clean | 13,266 |
 | 支持 Agent | 80 |
 
-上游来源包括 `openai/skills`、`anthropics/skills`、`google/skills`、`googleworkspace/cli`、`microsoft/SkillOpt`、`cloudflare/security-audit-skill`、`sickn33/antigravity-awesome-skills`、`LeoYeAI/openclaw-master-skills`、`TerminalSkills/skills`、`mukul975/Anthropic-Cybersecurity-Skills`、`thedaviddias/Front-End-Checklist` 等 35 个仓库；完整 commit 与许可证清单见 [`registry/sources.json`](registry/sources.json)。每个条目固定 commit SHA 并链接回原目录。
+上游来源包括 `openai/skills`、`anthropics/skills`、`google/skills`、`googleworkspace/cli`、`microsoft/SkillOpt`、`cloudflare/security-audit-skill`、`sickn33/antigravity-awesome-skills`、`LeoYeAI/openclaw-master-skills`、`TerminalSkills/skills`、`mukul975/Anthropic-Cybersecurity-Skills`、`thedaviddias/Front-End-Checklist` 等 76 个仓库；完整 commit 与许可证清单见 [`registry/sources.json`](registry/sources.json)。每个条目固定 commit SHA 并链接回原目录。
 
-三个超大仓库只作为外部目录列出、不纳入索引：`github/awesome-copilot`（约 128 MB）、`K-Dense-AI/scientific-agent-skills`（约 471 MB）、`JimLiu/baoyu-skills`（约 34 MB）。
+两个仓库列入来源清单但不纳入索引：`JimLiu/baoyu-skills`（约 34 MB，几乎全是图片素材）为控制安装体积而排除；`jpcaparas/superpowers-laravel` 使用 `laravel:ai-sdk` 这类命名空间名称，在 Windows 上无法作为目录安装。两条记录都保留在 `registry/sources.json` 并标注原因。
 
 18 个精选技能全部通过质量门禁 100/100（A+）；安全扫描均为 A+（`terminal-debugger` 有一条已说明的 info 级 `sudo` 提示）。
 

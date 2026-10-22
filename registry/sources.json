@@ -455,25 +455,663 @@
       "reason": "All 57 skills use namespaced names such as laravel:ai-sdk, which violate the Agent Skills name contract and cannot be installed as a directory on Windows."
     },
     {
-      "repo": "github/awesome-copilot",
-      "label": "GitHub Awesome Copilot",
-      "trust": "community",
-      "enabled": false,
-      "reason": "Repository is ~128 MB; a full checkout per install is unacceptable. Listed as an external catalog in the docs instead."
-    },
-    {
-      "repo": "K-Dense-AI/scientific-agent-skills",
-      "label": "K-Dense Scientific Skills",
-      "trust": "community",
-      "enabled": false,
-      "reason": "Repository is ~471 MB and dominated by scientific datasets. Listed as an external catalog in the docs instead."
-    },
-    {
       "repo": "JimLiu/baoyu-skills",
       "label": "Baoyu Skills",
       "trust": "community",
       "enabled": false,
       "reason": "Repository is ~34 MB, mostly image assets. Not indexed to keep installs small."
+    },
+    {
+      "repo": "sickn33/agentic-awesome-skills",
+      "label": "Agentic Awesome Skills",
+      "trust": "community",
+      "include": [
+        "plugins/agentic-awesome-skills/skills/**",
+        "plugins/agentic-bundle-*/skills/**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/tests/**",
+        "**/fixtures/**",
+        "**/node_modules/**"
+      ],
+      "maxSkills": 5000
+    },
+    {
+      "repo": "mohitagw15856/pm-claude-skills",
+      "label": "PM Claude Skills",
+      "trust": "community",
+      "include": [
+        "plugins/**/skills/**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/tests/**",
+        "**/fixtures/**",
+        "**/node_modules/**"
+      ],
+      "maxSkills": 4000
+    },
+    {
+      "repo": "hashgraph-online/awesome-codex-plugins",
+      "label": "Awesome Codex Plugins",
+      "trust": "community",
+      "include": [
+        "plugins/**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/tests/**",
+        "**/fixtures/**",
+        "**/node_modules/**"
+      ],
+      "maxSkills": 3500
+    },
+    {
+      "repo": "BioTender-max/awesome-bio-agent-skills",
+      "label": "Bio Agent Skills",
+      "trust": "community",
+      "include": [
+        "skills/**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/tests/**",
+        "**/fixtures/**",
+        "**/node_modules/**"
+      ],
+      "maxSkills": 2500
+    },
+    {
+      "repo": "github/awesome-copilot",
+      "label": "GitHub Awesome Copilot",
+      "trust": "community",
+      "include": [
+        "skills/**",
+        ".github/skills/**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/tests/**",
+        "**/fixtures/**",
+        "**/node_modules/**"
+      ],
+      "maxSkills": 800
+    },
+    {
+      "repo": "NVIDIA/skills",
+      "label": "NVIDIA",
+      "trust": "official",
+      "include": [
+        "skills/**",
+        "plugins/**/skills/**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/tests/**",
+        "**/fixtures/**",
+        "**/node_modules/**"
+      ],
+      "maxSkills": 800
+    },
+    {
+      "repo": "infrasity-labs/dev-gtm-claude-skills",
+      "label": "Infrasity GTM Skills",
+      "trust": "community",
+      "include": [
+        "plugins/**/skills/**",
+        ".claude/skills/**",
+        ".claude/extensions/**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/tests/**",
+        "**/fixtures/**",
+        "**/node_modules/**"
+      ],
+      "maxSkills": 800
+    },
+    {
+      "repo": "davepoon/buildwithclaude",
+      "label": "Build with Claude",
+      "trust": "community",
+      "include": [
+        "plugins/**/skills/**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/tests/**",
+        "**/fixtures/**",
+        "**/node_modules/**"
+      ],
+      "maxSkills": 600
+    },
+    {
+      "repo": "gooseworks-ai/goose-skills",
+      "label": "Goose Growth Skills",
+      "trust": "community",
+      "include": [
+        "skills/**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/tests/**",
+        "**/fixtures/**",
+        "**/node_modules/**"
+      ],
+      "maxSkills": 600
+    },
+    {
+      "repo": "ruvnet/ruflo",
+      "label": "Ruflo Agent Skills",
+      "trust": "community",
+      "include": [
+        ".agents/skills/**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/tests/**",
+        "**/fixtures/**",
+        "**/node_modules/**"
+      ],
+      "maxSkills": 600
+    },
+    {
+      "repo": "foryourhealth111-pixel/Vibe-Skills",
+      "label": "Vibe Skills",
+      "trust": "community",
+      "include": [
+        "bundled/skills/**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/tests/**",
+        "**/fixtures/**",
+        "**/node_modules/**"
+      ],
+      "maxSkills": 500
+    },
+    {
+      "repo": "OneWave-AI/claude-skills",
+      "label": "OneWave Skills",
+      "trust": "community",
+      "include": [
+        "**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/tests/**",
+        "**/fixtures/**",
+        "**/node_modules/**"
+      ],
+      "maxSkills": 400
+    },
+    {
+      "repo": "makenotion/notion-cookbook",
+      "label": "Notion Cookbook",
+      "trust": "official",
+      "include": [
+        "**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/tests/**",
+        "**/fixtures/**",
+        "**/node_modules/**",
+        "docs/**"
+      ],
+      "maxSkills": 400
+    },
+    {
+      "repo": "NousResearch/hermes-agent",
+      "label": "Nous Research",
+      "trust": "official",
+      "include": [
+        "optional-skills/**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/tests/**",
+        "**/fixtures/**",
+        "**/node_modules/**"
+      ],
+      "maxSkills": 400
+    },
+    {
+      "repo": "wondelai/skills",
+      "label": "Wondel AI Skills",
+      "trust": "community",
+      "include": [
+        "plugins/**/skills/**",
+        "37signals-way/**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/tests/**",
+        "**/fixtures/**",
+        "**/node_modules/**"
+      ],
+      "maxSkills": 400
+    },
+    {
+      "repo": "MengTo/Skills",
+      "label": "MengTo Skills",
+      "trust": "community",
+      "include": [
+        "agent-skills/**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/tests/**",
+        "**/fixtures/**",
+        "**/node_modules/**"
+      ],
+      "maxSkills": 350
+    },
+    {
+      "repo": "K-Dense-AI/scientific-agent-skills",
+      "label": "K-Dense Scientific Skills",
+      "trust": "community",
+      "include": [
+        "skills/**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/tests/**",
+        "**/fixtures/**",
+        "**/node_modules/**"
+      ],
+      "maxSkills": 350
+    },
+    {
+      "repo": "kensaurus/skills",
+      "label": "Kensaurus Skills",
+      "trust": "community",
+      "include": [
+        "**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/tests/**",
+        "**/fixtures/**",
+        "**/node_modules/**"
+      ],
+      "maxSkills": 350
+    },
+    {
+      "repo": "CALLE-AI/awesome-phone-call-agents",
+      "label": "Phone Call Agents",
+      "trust": "community",
+      "include": [
+        "skills/**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/tests/**",
+        "**/fixtures/**",
+        "**/node_modules/**"
+      ],
+      "maxSkills": 350
+    },
+    {
+      "repo": "indranilbanerjee/digital-marketing-pro",
+      "label": "Digital Marketing Pro",
+      "trust": "community",
+      "include": [
+        "**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/tests/**",
+        "**/fixtures/**",
+        "**/node_modules/**"
+      ],
+      "maxSkills": 350
+    },
+    {
+      "repo": "kishorkukreja/awesome-supply-chain",
+      "label": "Supply Chain Skills",
+      "trust": "community",
+      "include": [
+        "skills/**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/tests/**",
+        "**/fixtures/**",
+        "**/node_modules/**"
+      ],
+      "maxSkills": 300
+    },
+    {
+      "repo": "openclaw/openclaw",
+      "label": "OpenClaw",
+      "trust": "official",
+      "include": [
+        ".agents/skills/**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/tests/**",
+        "**/fixtures/**",
+        "**/node_modules/**"
+      ],
+      "maxSkills": 300
+    },
+    {
+      "repo": "AceDataCloud/Skills",
+      "label": "AceDataCloud",
+      "trust": "official",
+      "include": [
+        "**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/tests/**",
+        "**/fixtures/**",
+        "**/node_modules/**"
+      ],
+      "maxSkills": 300
+    },
+    {
+      "repo": "aaron-he-zhu/aaron-marketing-skills",
+      "label": "Aaron Marketing Skills",
+      "trust": "community",
+      "include": [
+        "**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/tests/**",
+        "**/fixtures/**",
+        "**/node_modules/**"
+      ],
+      "maxSkills": 300
+    },
+    {
+      "repo": "yaklang/hack-skills",
+      "label": "Yaklang Hack Skills",
+      "trust": "community",
+      "include": [
+        "skills/**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/tests/**",
+        "**/fixtures/**",
+        "**/node_modules/**"
+      ],
+      "maxSkills": 250
+    },
+    {
+      "repo": "browser-act/skills",
+      "label": "BrowserAct Skills",
+      "trust": "community",
+      "include": [
+        "**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/tests/**",
+        "**/fixtures/**",
+        "**/node_modules/**"
+      ],
+      "maxSkills": 250
+    },
+    {
+      "repo": "Orchestra-Research/AI-Research-SKILLs",
+      "label": "AI Research Skills",
+      "trust": "community",
+      "include": [
+        "**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/tests/**",
+        "**/fixtures/**",
+        "**/node_modules/**"
+      ],
+      "maxSkills": 250
+    },
+    {
+      "repo": "GulajavaMinistudio/awesome-copilot-id",
+      "label": "Awesome Copilot ID",
+      "trust": "community",
+      "include": [
+        ".agents/skills/**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/tests/**",
+        "**/fixtures/**",
+        "**/node_modules/**"
+      ],
+      "maxSkills": 250
+    },
+    {
+      "repo": "tradermonty/claude-trading-skills",
+      "label": "Trading Skills",
+      "trust": "community",
+      "include": [
+        "**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/tests/**",
+        "**/fixtures/**",
+        "**/node_modules/**"
+      ],
+      "maxSkills": 250
+    },
+    {
+      "repo": "tech-leads-club/agent-skills",
+      "label": "Tech Leads Club",
+      "trust": "community",
+      "include": [
+        "packages/skills-catalog/skills/**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/tests/**",
+        "**/fixtures/**",
+        "**/node_modules/**"
+      ],
+      "maxSkills": 250
+    },
+    {
+      "repo": "zhaoxuya520/reverse-skill",
+      "label": "Reverse Skill",
+      "trust": "community",
+      "include": [
+        "**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/tests/**",
+        "**/fixtures/**",
+        "**/node_modules/**"
+      ],
+      "maxSkills": 250
+    },
+    {
+      "repo": "elementalsouls/Claude-BugHunter",
+      "label": "Claude BugHunter",
+      "trust": "community",
+      "include": [
+        "**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/tests/**",
+        "**/fixtures/**",
+        "**/node_modules/**"
+      ],
+      "maxSkills": 200
+    },
+    {
+      "repo": "LambdaTest/agent-skills",
+      "label": "LambdaTest",
+      "trust": "official",
+      "include": [
+        "**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/tests/**",
+        "**/fixtures/**",
+        "**/node_modules/**"
+      ],
+      "maxSkills": 200
+    },
+    {
+      "repo": "Jeffallan/claude-skills",
+      "label": "Jeffallan Skills",
+      "trust": "community",
+      "include": [
+        "**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/tests/**",
+        "**/fixtures/**",
+        "**/node_modules/**"
+      ],
+      "maxSkills": 200
+    },
+    {
+      "repo": "qdrant/skills",
+      "label": "Qdrant",
+      "trust": "official",
+      "include": [
+        "**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/tests/**",
+        "**/fixtures/**",
+        "**/node_modules/**"
+      ],
+      "maxSkills": 150
+    },
+    {
+      "repo": "redis/agent-skills",
+      "label": "Redis",
+      "trust": "official",
+      "include": [
+        "**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/tests/**",
+        "**/fixtures/**",
+        "**/node_modules/**"
+      ],
+      "maxSkills": 150
+    },
+    {
+      "repo": "resend/resend-skills",
+      "label": "Resend",
+      "trust": "official",
+      "include": [
+        "**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/tests/**",
+        "**/fixtures/**",
+        "**/node_modules/**"
+      ],
+      "maxSkills": 150
+    },
+    {
+      "repo": "zapier/zapier-mcp",
+      "label": "Zapier",
+      "trust": "official",
+      "include": [
+        "**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/tests/**",
+        "**/fixtures/**",
+        "**/node_modules/**"
+      ],
+      "maxSkills": 150
+    },
+    {
+      "repo": "coderabbitai/skills",
+      "label": "CodeRabbit",
+      "trust": "official",
+      "include": [
+        "**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/tests/**",
+        "**/fixtures/**",
+        "**/node_modules/**"
+      ],
+      "maxSkills": 150
+    },
+    {
+      "repo": "veniceai/skills",
+      "label": "Venice AI",
+      "trust": "official",
+      "include": [
+        "**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/tests/**",
+        "**/fixtures/**",
+        "**/node_modules/**"
+      ],
+      "maxSkills": 150
+    },
+    {
+      "repo": "snyk/agent-scan",
+      "label": "Snyk",
+      "trust": "official",
+      "include": [
+        "**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/tests/**",
+        "**/fixtures/**",
+        "**/node_modules/**"
+      ],
+      "maxSkills": 150
+    },
+    {
+      "repo": "trailofbits/skills",
+      "label": "Trail of Bits",
+      "trust": "verified",
+      "include": [
+        "plugins/**/skills/**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/tests/**",
+        "**/fixtures/**",
+        "**/node_modules/**"
+      ],
+      "maxSkills": 200
+    },
+    {
+      "repo": "GarethManning/education-agent-skills",
+      "label": "Education Agent Skills",
+      "trust": "community",
+      "include": [
+        "skills/**"
+      ],
+      "exclude": [
+        "**/test/**",
+        "**/tests/**",
+        "**/fixtures/**",
+        "**/node_modules/**"
+      ],
+      "maxSkills": 250
     }
   ]
 }

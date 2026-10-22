@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SkillRig — Signed skill registry for Codex and 80 agents</title>
-<meta name="description" content="A signed, security-audited skill registry and zero-dependency installer for Codex, Claude Code, Cursor, and 77 more agents. 7,909 skills, Ed25519 signatures, per-file SHA-256, drift detection, and an MCP server.">
+<meta name="description" content="A signed, security-audited skill registry and zero-dependency installer for Codex, Claude Code, Cursor, and 77 more agents. 15,275 skills, Ed25519 signatures, per-file SHA-256, drift detection, and an MCP server.">
 <meta name="theme-color" content="#F2EEE4">
 <meta name="color-scheme" content="light">
 <meta property="og:title" content="SkillRig — Skills with a paper trail">
-<meta property="og:description" content="7,909 audited skills. 80 agents. One signed registry. Install with zero dependencies.">
+<meta property="og:description" content="15,275 audited skills. 80 agents. One signed registry. Install with zero dependencies.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://lixiao199115.github.io/skillrig/">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -44,6 +44,7 @@
   <nav class="masthead-nav" aria-label="Primary">
     <a href="#registry">Registry</a>
     <a href="#ledger">Security</a>
+    <a href="#record">Scale</a>
     <a href="#packs">Packs</a>
     <a href="#codex">Codex</a>
     <a href="#docs">Docs</a>
@@ -57,7 +58,7 @@
 <main id="top">
   <section class="hero" aria-labelledby="hero-title">
     <div class="hero-copy">
-      <p class="eyebrow reveal" style="--d:0ms"><span class="dot"></span> Registry of record — edition 1.1</p>
+      <p class="eyebrow reveal" style="--d:0ms"><span class="dot"></span> Registry of record — edition 1.2</p>
       <h1 id="hero-title" class="reveal" style="--d:60ms">Skills with<br>a <em>paper trail.</em></h1>
       <p class="lede reveal" style="--d:130ms">
         Agent skills are instructions your code assistant will follow. SkillRig treats them like packages:
@@ -79,8 +80,8 @@
         </div>
       </div>
       <dl class="hero-metrics reveal" style="--d:270ms">
-        <div><dt>Entries</dt><dd data-stat="skills">7,909</dd></div>
-        <div><dt>Installable</dt><dd data-stat="installable">7,481</dd></div>
+        <div><dt>Entries</dt><dd data-stat="skills">15,275</dd></div>
+        <div><dt>Installable</dt><dd data-stat="installable">14,684</dd></div>
         <div><dt>Agents</dt><dd data-stat="agents">80</dd></div>
         <div><dt>Runtime deps</dt><dd>0</dd></div>
       </dl>
@@ -100,7 +101,7 @@
         <p class="cert-status">Verified<span class="status-dot" aria-hidden="true"></span></p>
         <p class="cert-desc">Ed25519 signature over the canonical index. Per-file SHA-256 over every skill. Checked before a single instruction reaches your agent.</p>
         <dl class="cert-fields">
-          <div><dt>Entries</dt><dd data-cert="entries">7,909 skills · 13 packs</dd></div>
+          <div><dt>Entries</dt><dd data-cert="entries">15,275 skills · 13 packs</dd></div>
           <div><dt>Digest</dt><dd class="mono" data-cert="digest">sha256:32f794…</dd></div>
           <div><dt>Signed</dt><dd class="mono" data-cert="signed">2026-10-21</dd></div>
           <div><dt>Status</dt><dd>Valid <span class="ok-mark">✓</span></dd></div>
@@ -109,7 +110,7 @@
       <div class="cert-stamp" aria-hidden="true">
         <span>SKILLRIG</span>
         <strong>VERIFIED</strong>
-        <span>REGISTRY · 1.1</span>
+        <span>REGISTRY · 1.2</span>
       </div>
       <p class="cert-foot">Verify locally: <code>skillrig verify</code></p>
     </aside>
@@ -131,7 +132,7 @@
       <h2 id="registry-title">Every skill,<br><em>on the record.</em></h2>
       <div class="section-aside">
         <p>Curated entries are maintained in this repository. Upstream entries are pinned to a commit, scanned, and linked back to their source. Blocked entries stay visible so you can see what the gate caught.</p>
-        <p class="registry-count"><span data-stat="skills">7,909</span> entries · <span data-stat="sources">35</span> upstream repos · <span data-stat="clean">6,645</span> clean scans</p>
+        <p class="registry-count"><span data-stat="skills">15,275</span> entries · <span data-stat="sources">76</span> upstream repos · <span data-stat="clean">13,266</span> clean scans</p>
       </div>
     </div>
 
@@ -300,7 +301,7 @@
     </div>
     <div class="codex-cache">
       <p class="mono-label">Plugin cache</p>
-      <code>~/.codex/plugins/cache/<wbr>skillrig/skillrig/1.1.0/</code>
+      <code>~/.codex/plugins/cache/<wbr>skillrig/skillrig/1.2.0/</code>
       <hr>
       <p class="mono-label">Refresh</p>
       <code>codex plugin marketplace upgrade</code>
@@ -348,6 +349,129 @@
     <p class="sources-note">Skills keep their original licences. SkillRig records the licence and links to the source directory for every indexed entry.</p>
   </section>
 
+  <section class="record" id="record" aria-labelledby="record-title">
+    <div class="section-head">
+      <p class="section-no">07 / The record</p>
+      <h2 id="record-title">The world’s largest verified, signed, installable skill registry.</h2>
+      <div class="section-aside">
+        <p>Anyone can scrape a few million files. This index only counts entries that survived a deterministic gate: parse, dedupe, hash, scan, sign. Every number below is generated from the signed index, not typed by hand.</p>
+        <p class="registry-count"><a href="stats.json"><span class="mono">stats.json</span></a> · machine-readable, updated with every deploy</p>
+      </div>
+    </div>
+
+    <div class="record-band" aria-label="Registry at a glance">
+      <div class="record-stat record-stat-primary">
+        <span class="record-value" data-stat="verified">—</span>
+        <span class="record-label">verified, installable skills</span>
+      </div>
+      <div class="record-stat">
+        <span class="record-value" data-stat="filesHashed">—</span>
+        <span class="record-label">files hashed with SHA-256</span>
+      </div>
+      <div class="record-stat">
+        <span class="record-value" data-stat="official">—</span>
+        <span class="record-label">skills from official upstreams</span>
+      </div>
+      <div class="record-stat">
+        <span class="record-value" data-stat="sourcesIndexed">—</span>
+        <span class="record-label">repositories pinned to a commit</span>
+      </div>
+      <div class="record-stat">
+        <span class="record-value">0</span>
+        <span class="record-label">runtime dependencies</span>
+      </div>
+    </div>
+
+    <div class="record-columns">
+      <div class="record-method">
+        <p class="mono-label">What “verified” means here</p>
+        <ol class="method-list">
+          <li>
+            <span class="method-no">01</span>
+            <div><h3>A real <code>SKILL.md</code></h3><p>Frontmatter is parsed, required fields are checked, and names and descriptions are length-limited. A README is not a skill.</p></div>
+          </li>
+          <li>
+            <span class="method-no">02</span>
+            <div><h3>A unique name</h3><p>Entries are deduplicated by normalized name and content hash, so one upstream cannot flood the index with copies.</p></div>
+          </li>
+          <li>
+            <span class="method-no">03</span>
+            <div><h3>A hash for every file</h3><p>Paths and contents are hashed together across <code>SKILL.md</code>, references, and scripts, capped at 60 files and 8 MB per skill.</p></div>
+          </li>
+          <li>
+            <span class="method-no">04</span>
+            <div><h3>A security scan</h3><p>22 rules across five severities look for credential reads, exfiltration, remote execution, persistence, prompt injection, and hidden Unicode.</p></div>
+          </li>
+          <li>
+            <span class="method-no">05</span>
+            <div><h3>A signed index</h3><p>The whole catalogue is sealed with an Ed25519 signature and checked before a single entry is parsed. Anything that changes after signing fails closed.</p></div>
+          </li>
+        </ol>
+        <p class="record-note">Blocked entries stay visible with their findings, but they are excluded from the verified count. Verification is a gate, not a badge.</p>
+      </div>
+
+      <div class="record-compare">
+        <div class="compare-head">
+          <p class="mono-label">Registry comparison</p>
+          <p class="compare-date">Public figures read <span class="mono">2026-10-21</span></p>
+        </div>
+        <div class="compare-wrap">
+          <table class="compare-table">
+            <thead>
+              <tr>
+                <th scope="col">Registry</th>
+                <th scope="col">Size, as published</th>
+                <th scope="col">Entry verification</th>
+                <th scope="col">Index signature</th>
+                <th scope="col">Built-in installer</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="is-self">
+                <th scope="row">SkillRig</th>
+                <td data-label="Size, as published"><strong><span data-stat="verified">—</span> verified</strong><br><span class="compare-sub"><span data-stat="skills">—</span> total, <span data-stat="blocked">—</span> blocked</span></td>
+                <td data-label="Entry verification"><span class="compare-yes">SHA-256 per file + 22-rule scan</span></td>
+                <td data-label="Index signature"><span class="compare-yes">Ed25519</span></td>
+                <td data-label="Built-in installer"><span class="compare-yes">Yes · 0 deps</span></td>
+              </tr>
+              <tr>
+                <th scope="row">SkillsMP</th>
+                <td data-label="Size, as published">3,000,000+ <span class="compare-sub">self-reported</span></td>
+                <td data-label="Entry verification">Not described</td>
+                <td data-label="Index signature">Not described</td>
+                <td data-label="Built-in installer">Not described</td>
+              </tr>
+              <tr>
+                <th scope="row">skills.sh</th>
+                <td data-label="Size, as published">200+ listed <span class="compare-sub">1,439,859 all-time installs</span></td>
+                <td data-label="Entry verification">Not described</td>
+                <td data-label="Index signature">Not described</td>
+                <td data-label="Built-in installer"><code>npx skills</code></td>
+              </tr>
+              <tr>
+                <th scope="row">ClawHub</th>
+                <td data-label="Size, as published">30 skills · 12 plugins</td>
+                <td data-label="Entry verification">Moderated releases</td>
+                <td data-label="Index signature">Signed manifests</td>
+                <td data-label="Built-in installer"><code>openclaw</code> CLI</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="compare-note">“Not described” means no public statement was found on the project’s homepage on the date above; it is not a claim that no such process exists. Competitor sizes are their own published claims. SkillRig counts only entries that passed the gate above, so raw scrape totals are not directly comparable.</p>
+        <div class="record-endpoint">
+          <div>
+            <p class="mono-label">Public stats endpoint</p>
+            <code>https://lixiao199115.github.io/skillrig/stats.json</code>
+          </div>
+          <button class="copy-btn" type="button" data-copy="curl -s https://lixiao199115.github.io/skillrig/stats.json" aria-label="Copy stats endpoint command">
+            <span class="copy-icon" aria-hidden="true"></span><span class="copy-text">Copy</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="closing">
     <p class="mono-label">End of the ledger</p>
     <h2>Install something<br><em>you can inspect.</em></h2>
@@ -387,7 +511,7 @@
   </div>
   <div class="footer-bottom">
     <p>Built and maintained by <a href="https://github.com/LIXIAO199115">Li Xiaocheng</a>.</p>
-    <p class="mono">Edition 1.1 · <span data-cert="year">2026</span> · <a href="#top">Back to top ↑</a></p>
+    <p class="mono">Edition 1.2 · <span data-cert="year">2026</span> · <a href="#top">Back to top ↑</a></p>
   </div>
 </footer>
 

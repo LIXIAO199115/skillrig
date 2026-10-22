@@ -2,6 +2,37 @@
 
 All notable changes to SkillRig are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] — 2026-10-22
+
+The verified-scale release.
+
+### Registry
+
+- **15,275 skills** (18 curated + 15,257 upstream) indexed from **76 repositories** at pinned commit SHAs, up from 7,909 and 35.
+- **14,684 installable**, **591 blocked** by the security gate, **1,150 from official upstreams**.
+- **60,461 files hashed** and 3,493,750 body lines indexed. License mix: 13,829 permissive, 1,283 review, 126 copyleft, 37 unlicensed.
+- New sources include Microsoft, NVIDIA, Notion, Nous Research, Qdrant, Redis, Resend, Zapier, LambdaTest, Snyk, Trail of Bits, and large community collections.
+
+### Crawler
+
+- Sparse crawler: GitHub Git Tree plus batched GraphQL blob reads, five concurrent batch workers, and a per-blob disk cache. A 391 MB repository is now indexed without downloading a tarball.
+- Repositories above 35 MB route to sparse automatically; `--sparse` and `--tarball` override the choice per repository.
+
+### Installer
+
+- Sparse install for oversized repositories: SHA-pinned tree and blob reads, per-file verification, tarball fallback.
+- Verified end-to-end against a skill in a 391 MB repository.
+
+### Site and stats
+
+- New **Scale** section documents the five verification gates, compares registries with dated public figures, and explains why raw scrape totals are not comparable.
+- `stats.json` (`skillrig.stats.v1`) publishes entry counts, license mix, integrity record, agent and tool counts at a stable URL.
+
+### Documentation
+
+- Registry format and both READMEs updated with the new totals and the verification definition.
+- 55 tests pass; lint reports 0 errors and 0 warnings; 9 smoke checks pass.
+
 ## [1.1.0] — 2026-10-21
 
 The scale release.

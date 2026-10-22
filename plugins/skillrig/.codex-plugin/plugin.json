@@ -1,6 +1,6 @@
 {
   "name": "skillrig",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Signed, security-audited skill registry and zero-dependency installer for Codex and every agent that reads SKILL.md.",
   "author": {
     "name": "Li Xiaocheng",

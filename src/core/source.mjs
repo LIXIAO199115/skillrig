@@ -4,14 +4,16 @@ import { PACKAGE_ROOT, readTreeFromDir, treeHash, canonicalJson, oneLine } from 
 import { SkillRigError, UsageError, IntegrityError } from './errors.mjs';
 import { parseSkill } from './manifest.mjs';
 import { readTarGz, writeTarGz } from './tar.mjs';
-import { githubCommit, githubTarball } from './net.mjs';
+import { githubCommit, githubTarball, githubTree, githubBlob } from './net.mjs';
 import { getPack, getSkillsByName } from './registry.mjs';
 import { isValidSemver } from './semver.mjs';
 
-const MAX_SKILL_FILES = 400;
-const MAX_FILE_BYTES = 4 * 1024 * 1024;
+export const MAX_SKILL_FILES = 60;
+export const MAX_SKILL_FILE_BYTES = 1024 * 1024;
+export const MAX_SKILL_TOTAL_BYTES = 8 * 1024 * 1024;
 const REF_LIKE = /^(?:[0-9a-f]{7,40}|v?\d+\.\d+\.\d+(?:[-+][0-9A-Za-z.-]+)?|main|master|HEAD|latest|trunk|develop)$/i;
-const SKIP_DIR_RE = /(^|\/)(node_modules|\.git|\.github|test|tests|__tests__|fixtures?|vendor)\//i;
+const SKIP_DIR_RE = /(^|\/)(node_modules|\.git|test|tests|__tests__|fixtures?|vendor)\//i;
+const SKIP_FILE_RE = /(^|\/)(node_modules|\.git|test|tests|__tests__|fixtures?|vendor|dist|build|target)\//i;
 
 export function discoverSkillDirs(files) {
   const dirs = new Set();
@@ -25,20 +27,60 @@ export function discoverSkillDirs(files) {
   return [...dirs].sort();
 }
 
-export function filesInDir(files, dir) {
+export function discoverSkillDirsFromEntries(entries) {
+  const dirs = new Set();
+  for (const entry of entries) {
+    const normalized = entry.path.replace(/\\/g, '/');
+    if (normalized !== 'SKILL.md' && !normalized.endsWith('/SKILL.md')) continue;
+    if (SKIP_DIR_RE.test(normalized)) continue;
+    dirs.add(normalized === 'SKILL.md' ? '.' : normalized.slice(0, -'/SKILL.md'.length));
+  }
+  return [...dirs].sort();
+}
+
+export function selectSkillFiles(files, dir) {
   const prefix = dir === '.' ? '' : `${dir.replace(/\/$/, '')}/`;
-  const result = new Map();
-  for (const [file, value] of files) {
+  const selected = new Map();
+  let bytes = 0;
+  for (const [file, value] of [...files.entries()].sort((a, b) => a[0].localeCompare(b[0]))) {
     const normalized = file.replace(/\\/g, '/');
     if (prefix && !normalized.startsWith(prefix)) continue;
     const rel = normalized.slice(prefix.length);
     if (!rel) continue;
+    if (rel !== 'SKILL.md' && rel.endsWith('/SKILL.md')) continue;
+    if (SKIP_FILE_RE.test(rel)) continue;
     const data = value.data ?? value;
-    if (data.length > MAX_FILE_BYTES) continue;
-    if (result.size >= MAX_SKILL_FILES) break;
-    result.set(rel, value);
+    if (data.length > MAX_SKILL_FILE_BYTES) continue;
+    if (selected.size >= MAX_SKILL_FILES) break;
+    if (bytes + data.length > MAX_SKILL_TOTAL_BYTES) continue;
+    selected.set(rel, value);
+    bytes += data.length;
   }
-  return result;
+  return selected;
+}
+
+export function selectSkillEntries(entries, dir) {
+  const prefix = dir === '.' ? '' : `${dir.replace(/\/$/, '')}/`;
+  const selected = [];
+  let bytes = 0;
+  for (const entry of [...entries].sort((a, b) => a.path.localeCompare(b.path))) {
+    const normalized = entry.path.replace(/\\/g, '/');
+    if (prefix && !normalized.startsWith(prefix)) continue;
+    const rel = normalized.slice(prefix.length);
+    if (!rel) continue;
+    if (rel !== 'SKILL.md' && rel.endsWith('/SKILL.md')) continue;
+    if (SKIP_FILE_RE.test(rel)) continue;
+    if (entry.size > MAX_SKILL_FILE_BYTES) continue;
+    if (selected.length >= MAX_SKILL_FILES) break;
+    if (bytes + entry.size > MAX_SKILL_TOTAL_BYTES) continue;
+    selected.push({ ...entry, rel });
+    bytes += entry.size;
+  }
+  return selected;
+}
+
+export function filesInDir(files, dir) {
+  return selectSkillFiles(files, dir);
 }
 
 export function buildSkillFromFiles({
@@ -281,6 +323,92 @@ export async function loadGithub({
   return { skills, commit, repo, candidates };
 }
 
+async function mapLimit(items, limit, fn) {
+  const results = new Array(items.length);
+  let next = 0;
+  async function worker() {
+    while (next < items.length) {
+      const index = next++;
+      results[index] = await fn(items[index], index);
+    }
+  }
+  await Promise.all(Array.from({ length: Math.min(limit, items.length) }, worker));
+  return results;
+}
+
+export async function loadGithubSparse({
+  repo,
+  ref = null,
+  subpath = null,
+  skill = null,
+  all = false,
+  expectedIntegrity = null,
+  token = undefined,
+  noCache = false,
+  allowInvalid = false,
+}) {
+  const commit = await githubCommit(repo, ref, { token });
+  const tree = await githubTree(repo, commit, { token, noCache });
+  if (tree.truncated) {
+    throw new SkillRigError(`Git tree for ${repo}@${commit.slice(0, 7)} is truncated`, {
+      code: 'ERR_TREE_TRUNCATED',
+    });
+  }
+
+  let dirs = discoverSkillDirsFromEntries(tree.tree);
+  if (subpath) {
+    const clean = subpath.replace(/^\/+|\/+$/g, '').replace(/\/SKILL\.md$/i, '');
+    const exact = dirs.find((dir) => dir === clean);
+    dirs = exact ? [exact] : dirs.filter((dir) => dir.startsWith(`${clean}/`));
+    if (dirs.length === 0) throw new UsageError(`No SKILL.md found under ${repo}/${subpath}`);
+  }
+  if (dirs.length > 1 && !all && !skill) {
+    throw new UsageError(
+      `${repo} contains ${dirs.length} skill directories; use the full archive or pass a subpath.`,
+    );
+  }
+
+  const skills = [];
+  for (const dir of dirs) {
+    const entries = selectSkillEntries(tree.tree, dir);
+    if (!entries.some((entry) => entry.rel === 'SKILL.md')) continue;
+    const downloaded = await mapLimit(entries, 4, async (entry) => {
+      const data = await githubBlob(repo, entry.sha, { token, noCache });
+      if (data.length !== entry.size) {
+        throw new SkillRigError(
+          `Blob size mismatch for ${repo}/${entry.path}: expected ${entry.size}, got ${data.length}`,
+          { code: 'ERR_GIT_BLOB' },
+        );
+      }
+      return [entry.path, { data, mode: 0o644 }];
+    });
+    const files = new Map(downloaded);
+    const built = buildSkillFromFiles({
+      files,
+      dir,
+      source: {
+        type: 'github',
+        repo,
+        ref: commit,
+        path: dir,
+        url: `https://github.com/${repo}/tree/${commit}/${dir === '.' ? '' : dir}`,
+      },
+      expectedIntegrity: dirs.length === 1 ? expectedIntegrity : null,
+      allowInvalid,
+      origin: `${repo}${dir === '.' ? '' : `/${dir}`}`,
+    });
+    if (!built) continue;
+    if (skill && built.manifest.name.toLowerCase() !== skill.toLowerCase() && dir.toLowerCase() !== skill.toLowerCase()) {
+      continue;
+    }
+    skills.push(built);
+  }
+  if (skills.length === 0) {
+    throw new SkillRigError(`No valid skills found in ${repo}${skill ? ` matching "${skill}"` : ''}`);
+  }
+  return { skills, commit, repo, candidates: dirs.map((dir) => ({ dir })) };
+}
+
 export function loadLocal(dir, { skill = null, all = false, expectedIntegrity = null } = {}) {
   const absolute = path.resolve(dir);
   if (!fs.existsSync(absolute)) throw new UsageError(`Path not found: ${dir}`);
@@ -359,13 +487,29 @@ export async function loadRegistryEntry(entry, { all = false, repo = null } = {}
     return loadBundled(entry.name, { expectedIntegrity: entry.integrity });
   }
   if (entry.source?.type === 'github') {
-    const result = await loadGithub({
+    const request = {
       repo: entry.source.repo,
       ref: entry.source.ref,
       subpath: entry.source.path,
       all,
       expectedIntegrity: entry.integrity,
-    });
+    };
+    if (Number(entry.source.sizeMB || 0) > 20) {
+      try {
+        const result = await loadGithubSparse(request);
+        for (const skill of result.skills) skill.entry = entry;
+        return result;
+      } catch (error) {
+        if (error.code === 'ERR_INTEGRITY') throw error;
+        const result = await loadGithub(request);
+        for (const skill of result.skills) {
+          skill.entry = entry;
+          skill.warnings.push(`sparse fetch failed (${error.message}); used the full archive`);
+        }
+        return result;
+      }
+    }
+    const result = await loadGithub(request);
     for (const skill of result.skills) skill.entry = entry;
     return result;
   }

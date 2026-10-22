@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "algorithm": "ed25519",
   "keyId": "a159f773dbf9d466",
-  "digest": "sha256:edcb329584e08ba06a94717b8513bfd06e8549ccb381840c8421f463ef6cc459",
-  "signature": "XnW04P4BZ9VXL6SAVVa/ERePUeCOraK3GPOQ0rM3tUoKd/1butkWbiPUo/GUXaOCR3KDhORwFCvvNnnxGcjAAA==",
-  "signedAt": "2026-10-21T19:04:20.732Z"
+  "digest": "sha256:7d6bc00cd934581986d80c506c5ac3ad65e411d089181790eb87dc8ed3b9840a",
+  "signature": "3GY2P9OJuqgz/VxPvygHL+hTRyBd3blsGN8EgLNQlMaWN50QOyt/WF+pgFbsOggd4iQBe7hu+I/TZ+Mb/+vGCw==",
+  "signedAt": "2026-10-22T06:24:30.323Z"
 }

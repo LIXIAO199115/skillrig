@@ -135,7 +135,7 @@ Every install writes a lockfile:
 ```json
 {
   "lockfileVersion": 1,
-  "generatedBy": "skillrig@1.1.0",
+  "generatedBy": "skillrig@1.2.0",
   "updatedAt": "2026-10-21T16:04:00.000Z",
   "skills": {
     "codex-cli-workflows": {

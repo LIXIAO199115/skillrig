@@ -215,6 +215,12 @@
       mcpTools: DATA.meta.mcpTools || 10,
       packs: DATA.meta.packCount || DATA.packs.length,
       quality: DATA.meta.averageQuality,
+      verified: DATA.meta.verified != null ? DATA.meta.verified : DATA.skills.filter((skill) => !skill.blocked).length,
+      official: DATA.meta.official != null ? DATA.meta.official : DATA.skills.filter((skill) => skill.trust === 'official').length,
+      community: DATA.meta.community != null ? DATA.meta.community : 0,
+      filesHashed: DATA.meta.filesHashed || DATA.skills.reduce((sum, skill) => sum + (skill.files || 0), 0),
+      bodyLines: DATA.meta.bodyLines || DATA.skills.reduce((sum, skill) => sum + (skill.lines || 0), 0),
+      sourcesIndexed: DATA.meta.sourcesIndexed || 0,
     };
     $$('[data-stat]').forEach((node) => {
       const value = values[node.dataset.stat];

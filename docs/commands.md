@@ -1,6 +1,6 @@
 # Command reference
 
-SkillRig 1.1.0. Every command accepts the [global options](#global-options). Commands that support `--json` write machine-readable output to stdout and nothing else.
+SkillRig 1.2.0. Every command accepts the [global options](#global-options). Commands that support `--json` write machine-readable output to stdout and nothing else.
 
 ```
 skillrig <command> [options]
