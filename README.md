@@ -9,7 +9,7 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-14150f?style=flat-square)](LICENSE)
 [![Node](https://img.shields.io/badge/node-%3E%3D20.11-14150f?style=flat-square)](package.json)
 [![Runtime dependencies](https://img.shields.io/badge/runtime%20deps-0-f04e23?style=flat-square)](package.json)
-[![Skills](https://img.shields.io/badge/skills-7%2C909-1f5c45?style=flat-square)](registry/index.json)
+[![Skills](https://img.shields.io/badge/skills-15%2C275-1f5c45?style=flat-square)](registry/index.json)
 [![Agents](https://img.shields.io/badge/agents-80-1f5c45?style=flat-square)](docs/agents.md)
 [![Registry](https://img.shields.io/badge/registry-ed25519%20signed-f04e23?style=flat-square)](registry/index.json.sig)
 [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/LIXIAO199115/skillrig/badge)](https://securityscorecards.dev/viewer/?uri=github.com/LIXIAO199115/skillrig)
@@ -31,6 +31,8 @@ node bin/skillrig.mjs install codex-cli-workflows --agent codex
 ## Why this exists
 
 Agent skills are executable instructions. A skill can tell an agent to read `~/.ssh`, pipe a remote script into bash, silently rewrite git history, or hide instructions in an HTML comment. Marketplaces usually show a name and a description, then hand that file straight to your agent.
+
+We scanned all 15,275 indexed skills. 591 entries were blocked and 3,615 findings were recorded, 495 of them critical. The full breakdown, method, and caveats are in [docs/security-report.md](docs/security-report.md).
 
 SkillRig treats a skill like a package:
 
